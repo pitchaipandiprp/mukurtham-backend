@@ -20,6 +20,10 @@ const getProfile = [
 ];
 
 const createUser = [
+    body('user_type')
+        .notEmpty()
+        .withMessage('Type is required'),
+
     body('name')
         .notEmpty()
         .withMessage('Name is required'),

@@ -67,9 +67,15 @@ const createUser = async (data) => {
         throw new AppError('Mobile number already exists');
     }
 
+
+    const roleCode = data.user_type.trim().toUpperCase();
+    const userRole = await prisma.roles.findUnique({
+        where: { code: roleCode },
+    });
+
     return await prisma.users.create({
         data: {
-            role_id: data.role_id,
+            role_id: userRole.id,
             name: data.name,
             email: data.email,
             mobile: data.mobile,

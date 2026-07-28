@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE `users` ADD COLUMN `status` TINYINT NOT NULL DEFAULT 0;

@@ -5,7 +5,8 @@ import AppError from '../../utils/app-error.js';
 import userService from '../../services/users/user.service.js';
 
 const generateOtp = () => {
-    return Math.floor(100000 + Math.random() * 900000).toString();
+    // return Math.floor(100000 + Math.random() * 900000).toString();
+    return '123456'; // For testing purposes
 };
 
 const login = async (data) => {
@@ -178,15 +179,11 @@ const otpLogin = async (data) => {
         },
     });
 
+    const profile = await userService.getProfile({ user_id: user.id });
     return {
         accessToken,
         refreshToken,
-        user: {
-            id: user.id,
-            name: user.name,
-            email: user.email,
-            mobile: user.mobile,
-        },
+        user: profile,
     };
 };
 
