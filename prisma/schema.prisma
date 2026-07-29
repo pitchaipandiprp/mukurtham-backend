@@ -52,3 +52,19 @@ model OtpRequest {
   @@map("otp_request")
   @@index([mobile])
 }
+
+model Category {
+  id          Int       @id @default(autoincrement())
+  name        String    @unique @db.VarChar(50)
+  slug_url    String?   @db.VarChar(200)
+  icon        String?   @db.VarChar(100)
+  image       String?   @db.VarChar(250)
+  status      Int       @default(1) @db.TinyInt
+  sort_order  Int?      
+  created_by  Int?      
+  updated_by  Int?      
+  created_at  DateTime?  @db.DateTime(0)
+  updated_at  DateTime?  @db.DateTime(0)
+
+  @@map("categories")
+}

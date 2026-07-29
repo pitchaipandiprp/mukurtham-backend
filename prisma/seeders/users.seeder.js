@@ -16,8 +16,6 @@ async function userSeeder(prisma) {
 
     const roleMap = Object.fromEntries(roles.map((role) => [role.name, role.id]));
 
-    await prisma.$executeRawUnsafe('TRUNCATE TABLE users');
-
     await prisma.users.createMany({
         data: [
             {
@@ -26,6 +24,7 @@ async function userSeeder(prisma) {
                 email: 'admin@mukurtham.com',
                 mobile: '9500925655',
                 password: hashedPassword,
+                status: 1,
                 created_by: 1,
                 created_at: new Date(),
                 updated_by: 1,
@@ -37,6 +36,7 @@ async function userSeeder(prisma) {
                 email: 'vendor1@mukurtham.com',
                 mobile: '9000000002',
                 password: hashedPassword,
+                status: 1,
                 created_by: 1,
                 created_at: new Date(),
                 updated_by: 1,
@@ -48,6 +48,7 @@ async function userSeeder(prisma) {
                 email: 'customer1@mukurtham.com',
                 mobile: '9000000003',
                 password: hashedPassword,
+                status: 1,
                 created_by: 1,
                 created_at: new Date(),
                 updated_by: 1,

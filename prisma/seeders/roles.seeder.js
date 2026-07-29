@@ -14,6 +14,7 @@ const roleSeeds = [
 ];
 
 async function rolesSeeder(prisma) {
+
     await prisma.roles.createMany({
         data: roleSeeds.map((role) => ({
             ...role,
