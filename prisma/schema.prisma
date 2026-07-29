@@ -68,3 +68,43 @@ model Category {
 
   @@map("categories")
 }
+
+model State {
+  id          Int       @id @default(autoincrement())
+  name        String    @unique @db.VarChar(100)
+  status      Int       @default(1) @db.TinyInt
+  created_by  Int?      
+  updated_by  Int?      
+  created_at  DateTime?  @db.DateTime(0)
+  updated_at  DateTime?  @db.DateTime(0)
+
+  @@map("states")
+}
+
+model City {
+  id          Int       @id @default(autoincrement())
+  state_id    Int
+  name        String    @db.VarChar(100)
+  status      Int       @default(1) @db.TinyInt
+  created_by  Int?      
+  updated_by  Int?      
+  created_at  DateTime?  @db.DateTime(0)
+  updated_at  DateTime?  @db.DateTime(0)
+
+  @@map("cities")
+}
+
+model Locality {
+  id          Int       @id @default(autoincrement())
+  state_id    Int
+  city_id     Int
+  name        String    @db.VarChar(100)
+  is_popular  Int       @default(0) @db.TinyInt
+  status      Int       @default(1) @db.TinyInt
+  created_by  Int?      
+  updated_by  Int?      
+  created_at  DateTime?  @db.DateTime(0)
+  updated_at  DateTime?  @db.DateTime(0)
+
+  @@map("localities")
+}
