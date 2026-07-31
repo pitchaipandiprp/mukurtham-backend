@@ -59,6 +59,7 @@ model Category {
   slug_url    String?   @db.VarChar(200)
   icon        String?   @db.VarChar(100)
   image       String?   @db.VarChar(250)
+  color    String?   @db.VarChar(20)
   status      Int       @default(1) @db.TinyInt
   sort_order  Int?      
   created_by  Int?      
