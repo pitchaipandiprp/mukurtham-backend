@@ -109,3 +109,29 @@ model Locality {
 
   @@map("localities")
 }
+
+model CategoryService {
+  id                  Int      @id @default(autoincrement())
+  category_id         Int
+  state_id            Int?
+  city_id             Int?
+  locality_id         Int?
+  service_name        String   @db.VarChar(250)
+  service_description String?  @db.Text
+  service_address     String?  @db.Text
+  service_image       String?  @db.VarChar(250)
+  capacity            String?  @db.VarChar(100)
+  number_of_rooms     Int?      @default(0)
+  car_parking         String?  @db.VarChar(10)
+  ac_available        String?  @db.VarChar(10)
+  latitude            String?  @db.VarChar(100)
+  longitude           String?  @db.VarChar(100)
+  pricing_type        String?  @db.VarChar(50)
+  amount              Float   @default(0)
+  discount            Float    @default(0)
+  tax_percentage      Float    @default(0)
+  final_amount        Float    @default(0)
+  status              Int      @default(0) @db.TinyInt
+
+  @@map("category_services")
+}

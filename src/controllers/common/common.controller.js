@@ -6,8 +6,14 @@ const getCategories = async (req, res) => {
     Response.success(res, 'Success', categories);
 };
 
+const getLocalities = async (req, res) => {
+    const localities = await commonService.getLocalities(req.query);
+    Response.success(res, 'Success', localities);
+};
+
 const commonController = {
     getCategories,
+    getLocalities,
 };
 
 export default commonController;
