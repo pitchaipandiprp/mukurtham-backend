@@ -40,7 +40,7 @@ const createIndividualService = async (data) => {
             service_name: data.service_name,
             service_description: data.service_description || null,
             service_address: data.service_address || null,
-            service_image: data.service_image || null,
+            service_banner_image: data.service_banner_image || null,
             capacity: data.capacity || null,
             number_of_rooms: Number(data.number_of_rooms || 0),
             car_parking: data.car_parking || null,
