@@ -9,5 +9,6 @@ const router = express.Router();
 router.use(authMiddleware);
 
 router.post('/create-individual-service', imageUpload.single("service_banner_image"), individualServiceValidator.createIndividualService, categoryServiceController.createIndividualService);
+router.post('/get-individual-service', categoryServiceController.getIndividualService);
 
 export default router;

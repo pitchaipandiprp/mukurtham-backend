@@ -80,6 +80,9 @@ model State {
   created_at  DateTime?  @db.DateTime(0)
   updated_at  DateTime?  @db.DateTime(0)
 
+  localities       Locality[]
+  categoryServices CategoryService[]
+
   @@map("states")
 }
 
@@ -92,6 +95,9 @@ model City {
   updated_by  Int?      
   created_at  DateTime?  @db.DateTime(0)
   updated_at  DateTime?  @db.DateTime(0)
+
+  localities       Locality[]
+  categoryServices CategoryService[]
 
   @@map("cities")
 }
@@ -108,6 +114,11 @@ model Locality {
   created_at  DateTime?  @db.DateTime(0)
   updated_at  DateTime?  @db.DateTime(0)
 
+  state             State             @relation(fields: [state_id], references: [id])
+  city              City              @relation(fields: [city_id], references: [id])
+
+  categoryServices CategoryService[]
+  
   @@map("localities")
 }
 
@@ -117,22 +128,26 @@ model CategoryService {
   state_id                    Int?
   city_id                     Int?
   locality_id                 Int?
-  service_name                String   @db.VarChar(250)
-  service_description         String?  @db.Text
-  service_address             String?  @db.Text
-  service_banner_image        String?  @db.VarChar(250)
-  capacity                    String?  @db.VarChar(100)
+  service_name                String    @db.VarChar(250)
+  service_description         String?   @db.Text
+  service_address             String?   @db.Text
+  service_banner_image        String?   @db.VarChar(250)
+  capacity                    String?   @db.VarChar(100)
   number_of_rooms             Int?      @default(0)
-  car_parking                 String?  @db.VarChar(10)
-  ac_available                String?  @db.VarChar(10)
-  latitude                    String?  @db.VarChar(100)
-  longitude                   String?  @db.VarChar(100)
-  pricing_type                String?  @db.VarChar(50)
-  amount                      Float   @default(0)
-  discount                    Float    @default(0)
-  tax_percentage              Float    @default(0)
-  final_amount                Float    @default(0)
-  status                      Int      @default(0) @db.TinyInt
+  car_parking                 String?   @db.VarChar(10)
+  ac_available                String?   @db.VarChar(10)
+  latitude                    String?   @db.VarChar(100)
+  longitude                   String?   @db.VarChar(100)
+  pricing_type                String?   @db.VarChar(50)
+  amount                      Float     @default(0)
+  discount                    Float     @default(0)
+  tax_percentage              Float     @default(0)
+  final_amount                Float     @default(0)
+  status                      Int       @default(0) @db.TinyInt
+
+  state                       State?    @relation(fields: [state_id], references: [id])
+  city                        City?     @relation(fields: [city_id], references: [id])
+  locality                    Locality? @relation(fields: [locality_id], references: [id])
 
   @@map("category_services")
 }
