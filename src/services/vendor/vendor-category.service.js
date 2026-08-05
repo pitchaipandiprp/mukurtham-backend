@@ -107,7 +107,7 @@ const getIndividualService = async (data) => {
 
 
 const individualServiceList = async (data) => {
-    const where = {};
+    const where = { status: { not: 2 } }; //Except deleted records
 
     if (data.user_id) {
         where.user_id = Number(data.user_id);
@@ -190,11 +190,30 @@ const individualServiceList = async (data) => {
     };
 };
 
+const deleteIndividualService = async (data) => {
+    const id = Number(data?.id);
+
+    if (!id) {
+        throw new AppError('Someting went wrong. Please provide a valid service ID');
+    }
+
+    const service = await prisma.categoryService.update({
+        where: {
+            id: id,
+        },
+        data: {
+            status: 2,
+        },
+    });
+
+    return;
+};
 
 const vendorCategoryService = {
     createIndividualService,
     getIndividualService,
     individualServiceList,
+    deleteIndividualService,
 };
 
 export default vendorCategoryService;

@@ -37,6 +37,12 @@ const createIndividualService = [
         .notEmpty()
         .withMessage('service_name is required'),
 
+    body('capacity')
+        .notEmpty()
+        .withMessage('capacity is required')
+        .isInt({ min: 1 })
+        .withMessage('capacity must be a positive integer'),
+
     body('amount')
         .notEmpty()
         .optional({ values: 'falsy' })

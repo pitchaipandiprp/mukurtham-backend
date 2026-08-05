@@ -25,6 +25,15 @@ const getIndividualService = async (req, res) => {
     }
 };
 
+const deleteIndividualService = async (req, res) => {
+    try {
+        const result = await vendorCategoryService.deleteIndividualService(req.body);
+        return Response.success(res, 'Service deleted successfully', result);
+    } catch (error) {
+        return Response.error(res, error.message, error.statusCode);
+    }
+};
+
 const individualServiceList = async (req, res) => {
     try {
         const result = await vendorCategoryService.individualServiceList(req.body);
@@ -38,6 +47,7 @@ const categoryServiceController = {
     createIndividualService,
     getIndividualService,
     individualServiceList,
+    deleteIndividualService,
 };
 
 export default categoryServiceController;
