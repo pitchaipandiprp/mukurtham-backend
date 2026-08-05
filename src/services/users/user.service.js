@@ -146,12 +146,102 @@ const changePassword = async (data) => {
     });
 };
 
+const userDelete = async (data) => {
+    const id = Number(data?.id);
+
+    if (!id) {
+        throw new AppError('Something went wrong. Please provide a valid user ID');
+    }
+
+    const user = await prisma.users.update({
+        where: {
+            id: id,
+        },
+        data: {
+            status: 2,
+        },
+    });
+
+    return;
+};
+
+const userList = async (data) => {
+    const where = { status: { not: 2 } }; //Except deleted records
+
+    if (data.role_id) {
+        where.role_id = Number(data.role_id);
+    }
+
+    if (data.search?.trim()) {
+        const search = data.search.trim();
+
+        where.OR = [
+            {
+                name: {
+                    contains: search,
+                },
+            },
+            {
+                email: {
+                    contains: search,
+                },
+            },
+            {
+                mobile: {
+                    contains: search,
+                },
+            },
+        ];
+    }
+
+    if (data.status !== undefined && data.status !== "") {
+        where.status = Number(data.status);
+    }
+
+    const page = Number(data.page || 1);
+    const limit = Number(data.limit || 10);
+
+    const skip = (page - 1) * limit;
+
+    const [result, total] = await Promise.all([
+        prisma.users.findMany({
+            where,
+            include: {
+                role: {
+                    select: {
+                        name: true,
+                    },
+                },
+            },
+            skip,
+            take: limit,
+            orderBy: data.orderBy || {
+                id: "desc",
+            },
+        }),
+
+        prisma.users.count({
+            where,
+        }),
+    ]);
+
+    return {
+        total,
+        page,
+        limit,
+        totalPages: Math.ceil(total / limit),
+        rows: result,
+    };
+};
+
 const userService = {
     getUsers,
     getProfile,
     createUser,
     updateUser,
     changePassword,
+    userList,
+    userDelete,
 };
 
 export default userService;

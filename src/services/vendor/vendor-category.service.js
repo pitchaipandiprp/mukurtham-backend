@@ -107,6 +107,12 @@ const getIndividualService = async (data) => {
 
 
 const individualServiceList = async (data) => {
+
+    const userId = Number(data.user_id);
+    if (!userId) {
+        throw new AppError('Someting went wrong. Please provide a valid user ID');
+    }
+
     const where = { status: { not: 2 } }; //Except deleted records
 
     if (data.user_id) {

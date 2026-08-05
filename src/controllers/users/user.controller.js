@@ -42,12 +42,32 @@ const changePassword = async (req, res) => {
     }
 };
 
+const userDelete = async (req, res) => {
+    try {
+        const result = await userService.userDelete(req.body);
+        return Response.success(res, 'User deleted successfully', result);
+    } catch (error) {
+        return Response.error(res, error.message, error.statusCode);
+    }
+};
+
+const userList = async (req, res) => {
+    try {
+        const result = await userService.userList(req.body);
+        return Response.success(res, 'User list fetched successfully', result);
+    } catch (error) {
+        return Response.error(res, error.message, error.statusCode);
+    }
+};
+
 const userController = {
     getUsers,
     getProfile,
     createUser,
     updateUser,
     changePassword,
+    userList,
+    userDelete,
 };
 
 export default userController;
