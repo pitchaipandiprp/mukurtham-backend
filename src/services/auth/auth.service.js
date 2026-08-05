@@ -25,6 +25,11 @@ const login = async (data) => {
     if (!isPasswordValid) {
         throw new AppError('Invalid email or password');
     }
+
+    if (user.status != 1) {
+        throw new AppError('Your account is inactive. Please contact support.');
+    }
+
     const accessToken = jwtUtils.generateAccessToken({
         id: user.id,
         email: user.email,
@@ -64,6 +69,10 @@ const sendOtp = async (data) => {
 
     if (!user) {
         throw new AppError('Mobile number is not registered');
+    }
+
+    if (user.status != 1) {
+        throw new AppError('Your account is inactive. Please contact support.');
     }
 
     const otp = generateOtp();

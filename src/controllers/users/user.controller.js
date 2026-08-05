@@ -42,10 +42,10 @@ const changePassword = async (req, res) => {
     }
 };
 
-const userDelete = async (req, res) => {
+const updateStatus = async (req, res) => {
     try {
-        const result = await userService.userDelete(req.body);
-        return Response.success(res, 'User deleted successfully', result);
+        const result = await userService.updateStatus(req.body);
+        return Response.success(res, 'User status updated successfully', result);
     } catch (error) {
         return Response.error(res, error.message, error.statusCode);
     }
@@ -67,7 +67,7 @@ const userController = {
     updateUser,
     changePassword,
     userList,
-    userDelete,
+    updateStatus,
 };
 
 export default userController;

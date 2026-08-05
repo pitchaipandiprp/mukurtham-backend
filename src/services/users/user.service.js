@@ -146,11 +146,15 @@ const changePassword = async (data) => {
     });
 };
 
-const userDelete = async (data) => {
+const updateStatus = async (data) => {
     const id = Number(data?.id);
 
     if (!id) {
         throw new AppError('Something went wrong. Please provide a valid user ID');
+    }
+
+    if (data.status === undefined || data.status === null) {
+        throw new AppError('Something went wrong. Please provide a valid status');
     }
 
     const user = await prisma.users.update({
@@ -158,7 +162,7 @@ const userDelete = async (data) => {
             id: id,
         },
         data: {
-            status: 2,
+            status: data.status,
         },
     });
 
@@ -241,7 +245,7 @@ const userService = {
     updateUser,
     changePassword,
     userList,
-    userDelete,
+    updateStatus,
 };
 
 export default userService;
