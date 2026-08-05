@@ -10,5 +10,6 @@ router.use(authMiddleware);
 
 router.post('/create-individual-service', imageUpload.single("service_banner_image"), individualServiceValidator.createIndividualService, categoryServiceController.createIndividualService);
 router.post('/get-individual-service', categoryServiceController.getIndividualService);
+router.post('/individual-service-list', categoryServiceController.individualServiceList);
 
 export default router;

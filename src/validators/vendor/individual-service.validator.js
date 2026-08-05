@@ -2,6 +2,12 @@ import { body, validationResult } from 'express-validator';
 import Response from '../../utils/response.js';
 
 const createIndividualService = [
+    body('user_id')
+        .notEmpty()
+        .withMessage('user_id is required')
+        .isInt({ min: 1 })
+        .withMessage('user_id must be a positive integer'),
+
     body('category_id')
         .notEmpty()
         .withMessage('category_id is required')
@@ -42,10 +48,10 @@ const createIndividualService = [
         .isFloat({ min: 0 })
         .withMessage('discount must be 0 or greater'),
 
-    body('tax')
+    body('tax_percentage')
         .optional({ values: 'falsy' })
         .isFloat({ min: 0 })
-        .withMessage('tax must be 0 or greater'),
+        .withMessage('tax_percentage must be 0 or greater'),
 
     (req, res, next) => {
         const errors = validationResult(req);

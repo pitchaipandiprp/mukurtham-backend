@@ -68,6 +68,8 @@ model Category {
   created_at  DateTime?  @db.DateTime(0)
   updated_at  DateTime?  @db.DateTime(0)
 
+  categoryServices CategoryService[]
+
   @@map("categories")
 }
 
@@ -124,6 +126,7 @@ model Locality {
 
 model CategoryService {
   id                          Int      @id @default(autoincrement())
+  user_id                     Int
   category_id                 Int
   state_id                    Int?
   city_id                     Int?
@@ -145,6 +148,7 @@ model CategoryService {
   final_amount                Float     @default(0)
   status                      Int       @default(0) @db.TinyInt
 
+  category                    Category  @relation(fields: [category_id], references: [id])
   state                       State?    @relation(fields: [state_id], references: [id])
   city                        City?     @relation(fields: [city_id], references: [id])
   locality                    Locality? @relation(fields: [locality_id], references: [id])

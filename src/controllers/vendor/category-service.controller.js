@@ -25,9 +25,19 @@ const getIndividualService = async (req, res) => {
     }
 };
 
+const individualServiceList = async (req, res) => {
+    try {
+        const result = await vendorCategoryService.individualServiceList(req.body);
+        return Response.success(res, 'Service fetched successfully', result);
+    } catch (error) {
+        return Response.error(res, error.message, error.statusCode);
+    }
+};
+
 const categoryServiceController = {
     createIndividualService,
     getIndividualService,
+    individualServiceList,
 };
 
 export default categoryServiceController;
