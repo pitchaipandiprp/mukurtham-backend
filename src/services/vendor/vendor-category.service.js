@@ -1,7 +1,7 @@
 import prisma from '../../config/prisma.js';
 import AppError from '../../utils/app-error.js';
 
-const createIndividualService = async (data) => {
+const createCategoryService = async (data) => {
     const userId = Number(data.user_id);
     const categoryId = Number(data.category_id);
     const stateId = Number(data.state_id);
@@ -26,7 +26,7 @@ const createIndividualService = async (data) => {
         });
 
         if (!existingService) {
-            throw new AppError("Individual service not found");
+            throw new AppError("Category service not found");
         }
     }
 
@@ -69,7 +69,7 @@ const createIndividualService = async (data) => {
 
 };
 
-const getIndividualService = async (data) => {
+const getCategoryService = async (data) => {
     const id = Number(data?.id);
 
     if (!id) {
@@ -106,7 +106,7 @@ const getIndividualService = async (data) => {
 };
 
 
-const individualServiceList = async (data) => {
+const categoryServiceList = async (data) => {
 
     const userId = Number(data.user_id);
     if (!userId) {
@@ -196,7 +196,7 @@ const individualServiceList = async (data) => {
     };
 };
 
-const deleteIndividualService = async (data) => {
+const deleteCategoryService = async (data) => {
     const id = Number(data?.id);
 
     if (!id) {
@@ -216,10 +216,10 @@ const deleteIndividualService = async (data) => {
 };
 
 const vendorCategoryService = {
-    createIndividualService,
-    getIndividualService,
-    individualServiceList,
-    deleteIndividualService,
+    createCategoryService,
+    getCategoryService,
+    categoryServiceList,
+    deleteCategoryService,
 };
 
 export default vendorCategoryService;

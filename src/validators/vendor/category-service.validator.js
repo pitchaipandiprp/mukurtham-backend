@@ -1,7 +1,7 @@
 import { body, validationResult } from 'express-validator';
 import Response from '../../utils/response.js';
 
-const createIndividualService = [
+const createCategoryService = [
     body('user_id')
         .notEmpty()
         .withMessage('user_id is required')
@@ -70,8 +70,8 @@ const createIndividualService = [
     },
 ];
 
-const individualServiceValidator = {
-    createIndividualService,
+const categoryServiceValidator = {
+    createCategoryService,
 };
 
-export default individualServiceValidator;
+export default categoryServiceValidator;

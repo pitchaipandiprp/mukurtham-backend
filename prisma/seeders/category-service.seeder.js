@@ -39,7 +39,7 @@ async function categoryServiceSeeder(prisma) {
 
             service_address: `Door No ${i}, Anna Salai, Chennai`,
 
-            service_banner_image: `service-${i}.jpg`,
+            service_banner_image: 'sample.jpg',
 
             capacity: `${100 + (i * 5)}`,
 
