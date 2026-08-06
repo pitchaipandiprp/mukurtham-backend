@@ -1,4 +1,5 @@
 import { PrismaClient } from "@prisma/client";
+import { UPLOAD_DIR } from '../../src/config/config.js';
 
 const prisma = new PrismaClient();
 
@@ -39,7 +40,7 @@ async function categoryServiceSeeder(prisma) {
 
             service_address: `Door No ${i}, Anna Salai, Chennai`,
 
-            service_banner_image: 'sample.jpg',
+            service_banner_image: `${UPLOAD_DIR}/sample-${((i - 1) % 5) + 1}.jpg`,
 
             capacity: `${100 + (i * 5)}`,
 
