@@ -215,11 +215,11 @@ const deleteCategoryService = async (data) => {
     return;
 };
 
-const vendorCategoryService = {
+const categoryService = {
     createCategoryService,
     getCategoryService,
     categoryServiceList,
     deleteCategoryService,
 };
 
-export default vendorCategoryService;
+export default categoryService;

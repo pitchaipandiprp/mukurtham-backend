@@ -1,4 +1,4 @@
-import vendorCategoryService from '../../services/vendor/vendor-category.service.js';
+import categoryService from '../../services/vendor/category.service.js';
 import Response from '../../utils/response.js';
 import { UPLOAD_DIR } from '../../config/config.js';
 
@@ -8,7 +8,7 @@ const createCategoryService = async (req, res) => {
             ...req.body,
             service_banner_image: req.file ? `${UPLOAD_DIR}/${req.file.filename}` : null,
         };
-        const result = await vendorCategoryService.createCategoryService(reqData);
+        const result = await categoryService.createCategoryService(reqData);
         const msg = reqData.id ? 'Service updated successfully' : 'Service created successfully';
         return Response.success(res, msg, result);
     } catch (error) {
@@ -18,7 +18,7 @@ const createCategoryService = async (req, res) => {
 
 const getCategoryService = async (req, res) => {
     try {
-        const result = await vendorCategoryService.getCategoryService(req.body);
+        const result = await categoryService.getCategoryService(req.body);
         return Response.success(res, 'Service fetched successfully', result);
     } catch (error) {
         return Response.error(res, error.message, error.statusCode);
@@ -27,7 +27,7 @@ const getCategoryService = async (req, res) => {
 
 const deleteCategoryService = async (req, res) => {
     try {
-        const result = await vendorCategoryService.deleteCategoryService(req.body);
+        const result = await categoryService.deleteCategoryService(req.body);
         return Response.success(res, 'Service deleted successfully', result);
     } catch (error) {
         return Response.error(res, error.message, error.statusCode);
@@ -36,7 +36,7 @@ const deleteCategoryService = async (req, res) => {
 
 const categoryServiceList = async (req, res) => {
     try {
-        const result = await vendorCategoryService.categoryServiceList(req.body);
+        const result = await categoryService.categoryServiceList(req.body);
         return Response.success(res, 'Service fetched successfully', result);
     } catch (error) {
         return Response.error(res, error.message, error.statusCode);
