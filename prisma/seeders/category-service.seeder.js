@@ -42,9 +42,9 @@ async function categoryServiceSeeder(prisma) {
 
             service_banner_image: `${UPLOAD_DIR}/sample-${((i - 1) % 5) + 1}.jpg`,
 
-            capacity: `${100 + (i * 5)}`,
+            capacity: 500 + (i * 5),
 
-            number_of_rooms: (i % 15) + 1,
+            number_of_rooms: (i % 1000) + 1,
 
             car_parking: i % 2 === 0 ? "Yes" : "No",
 

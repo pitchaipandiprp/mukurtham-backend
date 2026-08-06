@@ -60,7 +60,7 @@ model Category {
   slug_url    String?   @db.VarChar(200)
   icon        String?   @db.VarChar(100)
   image       String?   @db.VarChar(250)
-  color    String?   @db.VarChar(20)
+  color    String?      @db.VarChar(20)
   status      Int       @default(1) @db.TinyInt
   sort_order  Int?      
   created_by  Int?      
@@ -69,8 +69,24 @@ model Category {
   updated_at  DateTime?  @db.DateTime(0)
 
   categoryServices CategoryService[]
+  facilities       Facility[]
 
   @@map("categories")
+}
+
+model Facility {
+  id            Int       @id @default(autoincrement())
+  category_id   Int
+  name          String    @unique @db.VarChar(50)
+  status        Int       @default(1) @db.TinyInt
+  created_by    Int?      
+  updated_by    Int?      
+  created_at    DateTime?  @db.DateTime(0)
+  updated_at    DateTime?  @db.DateTime(0)
+
+  category Category  @relation(fields: [category_id], references: [id])
+
+  @@map("facilities")
 }
 
 model State {
@@ -92,6 +108,7 @@ model City {
   id          Int       @id @default(autoincrement())
   state_id    Int
   name        String    @db.VarChar(100)
+  is_popular  Int       @default(0) @db.TinyInt
   status      Int       @default(1) @db.TinyInt
   created_by  Int?      
   updated_by  Int?      
@@ -109,7 +126,6 @@ model Locality {
   state_id    Int
   city_id     Int
   name        String    @db.VarChar(100)
-  is_popular  Int       @default(0) @db.TinyInt
   status      Int       @default(1) @db.TinyInt
   created_by  Int?      
   updated_by  Int?      
@@ -135,7 +151,7 @@ model CategoryService {
   service_description         String?   @db.Text
   service_address             String?   @db.Text
   service_banner_image        String?   @db.VarChar(250)
-  capacity                    String?   @db.VarChar(100)
+  capacity                    Int?   @default(0)
   number_of_rooms             Int?      @default(0)
   car_parking                 String?   @db.VarChar(10)
   ac_available                String?   @db.VarChar(10)
@@ -147,6 +163,10 @@ model CategoryService {
   tax_percentage              Float     @default(0)
   final_amount                Float     @default(0)
   status                      Int       @default(0) @db.TinyInt
+  created_by                  Int?      
+  updated_by                  Int?      
+  created_at                  DateTime?  @db.DateTime(0)
+  updated_at                  DateTime?  @db.DateTime(0)
 
   category                    Category  @relation(fields: [category_id], references: [id])
   state                       State?    @relation(fields: [state_id], references: [id])

@@ -30,7 +30,7 @@ const createCategoryService = async (data) => {
         }
     }
 
-    const insertData = {
+    let insertData = {
         user_id: userId,
         category_id: categoryId,
         state_id: stateId,
@@ -40,7 +40,7 @@ const createCategoryService = async (data) => {
         service_description: data.service_description || null,
         service_address: data.service_address || null,
         service_banner_image: data.service_banner_image || existingService?.service_banner_image || null,
-        capacity: data.capacity || null,
+        capacity: Number(data.capacity || 0),
         number_of_rooms: Number(data.number_of_rooms || 0),
         car_parking: data.car_parking || null,
         ac_available: data.ac_available || null,
@@ -55,6 +55,8 @@ const createCategoryService = async (data) => {
     };
 
     if (existingService) {
+        insertData.updated_by = userId;
+        insertData.updated_at = new Date();
         return await prisma.categoryService.update({
             where: {
                 id: categoryServiceId,
@@ -62,6 +64,11 @@ const createCategoryService = async (data) => {
             data: insertData,
         });
     } else {
+        insertData.created_by = userId;
+        insertData.created_at = new Date();
+        insertData.updated_by = userId;
+        insertData.updated_at = new Date();
+
         return await prisma.categoryService.create({
             data: insertData,
         });

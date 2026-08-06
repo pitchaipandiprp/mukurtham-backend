@@ -6,6 +6,15 @@ const getCategories = async () => {
     return await prisma.category.findMany();
 };
 
+const getFacilities = async (data) => {
+    const categoryId = data?.category_id ? Number(data.category_id) : 1;
+    return await prisma.facility.findMany({
+        where: {
+            category_id: categoryId,
+        },
+    });
+};
+
 const getLocalities = async (filters = {}) => {
     const status = filters.status ? Number(filters.status) : 1;
     const stateId = filters.state_id ? Number(filters.state_id) : undefined;
@@ -35,7 +44,7 @@ const getLocalities = async (filters = {}) => {
                 OR localities.name LIKE ${`%${search}%`}
             )
         ORDER BY
-            localities.is_popular DESC,
+            cities.is_popular DESC,
             localities.name ASC
         LIMIT ${limit}
     `;
@@ -45,6 +54,7 @@ const getLocalities = async (filters = {}) => {
 
 const commonService = {
     getCategories,
+    getFacilities,
     getLocalities,
 };
 

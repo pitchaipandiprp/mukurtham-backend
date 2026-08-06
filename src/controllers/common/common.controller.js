@@ -6,6 +6,11 @@ const getCategories = async (req, res) => {
     Response.success(res, 'Success', categories);
 };
 
+const getFacilities = async (req, res) => {
+    const facilities = await commonService.getFacilities(req.body);
+    Response.success(res, 'Success', facilities);
+};
+
 const getLocalities = async (req, res) => {
     const localities = await commonService.getLocalities(req.query);
     Response.success(res, 'Success', localities);
@@ -13,6 +18,7 @@ const getLocalities = async (req, res) => {
 
 const commonController = {
     getCategories,
+    getFacilities,
     getLocalities,
 };
 
