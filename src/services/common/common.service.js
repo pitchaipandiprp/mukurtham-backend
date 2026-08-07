@@ -49,7 +49,15 @@ const getLocalities = async (filters = {}) => {
         LIMIT ${limit}
     `;
 
-    return localities;
+    const result = localities.map((item) => ({
+        ...item,
+        id: Number(item.id),
+        state_id: Number(item.state_id),
+        city_id: Number(item.city_id),
+    }));
+
+
+    return result;
 };
 
 const commonService = {
