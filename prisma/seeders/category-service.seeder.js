@@ -26,6 +26,8 @@ async function categoryServiceSeeder(prisma) {
         const tax = 18;
         const finalAmount = (amount - discount) + ((amount - discount) * tax / 100);
 
+        const wrap = (n) => ((n % 5) + 5) % 5 + 1;
+
         services.push({
             user_id: userId,
             category_id: categoryId,
@@ -46,6 +48,7 @@ async function categoryServiceSeeder(prisma) {
 
             number_of_rooms: (i % 1000) + 1,
 
+            facility_ids: `${wrap(i - 1)},${wrap(i - 2)},${wrap(i - 3)},${wrap(i - 4)}`,
             car_parking: i % 2 === 0 ? "Yes" : "No",
 
             ac_available: i % 3 === 0 ? "No" : "Yes",

@@ -1,168 +1,135 @@
+import { Prisma as PrismaClient } from "@prisma/client";
 import prisma from '../../config/prisma.js';
 import AppError from '../../utils/app-error.js';
 
 const categoryServiceSearch = async (data) => {
 
-    const where = {
-        status: 1,
-    };
+    const page = Number(data.page || 1);
+    const limit = Number(data.limit || 10);
+    const skip = (page - 1) * limit;
+
+    const conditions = [
+        PrismaClient.sql`cs.status = 1`,
+    ];
 
     // Category
-    if (data?.category_name?.trim()) {
-        where.category = {
-            status: 1,
-            name: {
-                contains: data.category_name?.trim(),
-            },
-        };
-    }
     if (data?.category_id) {
-        where.category = {
-            id: Number(data.category_id),
-        };
+        conditions.push(
+            PrismaClient.sql`cs.category_id = ${Number(data.category_id)}`
+        );
     }
 
-    // Location
-    if (data?.location_name?.trim()) {
-        where.locality = {
-            status: 1,
-            name: {
-                contains: data.location_name.trim(),
-            },
-        };
-    }
-
+    // Locality
     if (data?.locality_id) {
-        where.locality = {
-            id: Number(data.locality_id),
-        };
+        conditions.push(
+            PrismaClient.sql`cs.locality_id = ${Number(data.locality_id)}`
+        );
     }
 
-    const minCapacity = Number(data.min_capacity || 0);
-    const maxCapacity = Number(data.max_capacity || 0);
+    // Capacity
+    const hasMinCapacity = data.min_capacity !== undefined && data.min_capacity !== null && data.min_capacity !== "";
+    const hasMaxCapacity = data.max_capacity !== undefined && data.max_capacity !== null && data.max_capacity !== "";
 
-    if (minCapacity > 0 || maxCapacity > 0) {
-        if (minCapacity === maxCapacity) {
-            // Example: 500+
-            where.capacity = {
-                gte: minCapacity,
-            };
-        } else {
-            // Example: 50 - 100
-            where.capacity = {
-                gte: minCapacity,
-                lte: maxCapacity,
-            };
-        }
+    const minCapacity = Number(data.min_capacity);
+    const maxCapacity = Number(data.max_capacity);
+
+    if (hasMinCapacity) {
+        conditions.push(
+            PrismaClient.sql`cs.capacity >= ${minCapacity}`
+        );
     }
 
-    const minPriceRange = Number(data.min_price_range || 0);
-    const maxPriceRange = Number(data.max_price_range || 0);
-
-    if (minPriceRange > 0 || maxPriceRange > 0) {
-        if (minPriceRange === maxPriceRange) {
-            // Example: 500+
-            where.final_amount = {
-                gte: minPriceRange,
-            };
-        } else {
-            // Example: 50 - 100
-            where.final_amount = {
-                gte: minPriceRange,
-                lte: maxPriceRange,
-            };
-        }
+    if (hasMaxCapacity) {
+        conditions.push(
+            PrismaClient.sql`cs.capacity <= ${maxCapacity}`
+        );
     }
 
-    // Latitude
-    if (data?.latitude?.trim()) {
-        where.latitude = data.latitude.trim();
+    // Price
+    const hasMinPrice = data.min_price_range !== undefined && data.min_price_range !== null && data.min_price_range !== "";
+    const hasMaxPrice = data.max_price_range !== undefined && data.max_price_range !== null && data.max_price_range !== "";
+
+    const minPrice = Number(data.min_price_range);
+    const maxPrice = Number(data.max_price_range);
+
+    if (hasMinPrice) {
+        conditions.push(
+            PrismaClient.sql`cs.final_amount >= ${minPrice}`
+        );
     }
 
-    // Longitude
-    if (data?.longitude?.trim()) {
-        where.longitude = data.longitude.trim();
+    if (hasMaxPrice) {
+        conditions.push(
+            PrismaClient.sql`cs.final_amount <= ${maxPrice}`
+        );
+    }
+
+    // Facility
+    if (data?.facility_ids) {
+        const facilityIdArr = data.facility_ids
+            .split(",")
+            .map(Number)
+            .filter((id) => !isNaN(id));
+
+        const facilityConditions = facilityIdArr.map((id) =>
+            PrismaClient.sql`FIND_IN_SET(${id}, cs.facility_ids)`
+        );
+
+        conditions.push(
+            PrismaClient.sql`(${PrismaClient.join(facilityConditions, " OR ")})`
+        );
     }
 
     // Search
     if (data?.search_text?.trim()) {
-        const search_text = data.search_text.trim();
+        const keyword = `%${data.search_text.trim()}%`;
 
-        where.OR = [
-            {
-                category: {
-                    name: {
-                        contains: search_text,
-                    },
-                },
-            },
-            {
-                service_name: {
-                    contains: search_text,
-                },
-            },
-            {
-                service_description: {
-                    contains: search_text,
-                },
-            },
-            {
-                locality: {
-                    name: {
-                        contains: search_text,
-                    },
-                },
-            },
-        ];
+        conditions.push(
+            PrismaClient.sql`(
+                c.name LIKE ${`%${keyword}%`}
+                OR cs.service_name LIKE ${`%${keyword}%`}
+                OR cs.service_description LIKE ${`%${keyword}%`}
+                OR l.name LIKE ${`%${keyword}%`}
+            )`
+        );
     }
 
-    const page = Number(data.page || 1);
-    const limit = Number(data.limit || 10);
+    const whereClause = PrismaClient.sql`${PrismaClient.join(conditions, " AND ")}`;
 
-    const skip = (page - 1) * limit;
+    let services = await prisma.$queryRaw`
+        SELECT
+            cs.*,
+            c.name AS category_name,
+            l.name AS locality_name,
+            ci.name AS city_name
+        FROM category_services cs
+        LEFT JOIN categories c ON c.id = cs.category_id
+        LEFT JOIN localities l ON l.id = cs.locality_id
+        LEFT JOIN cities ci ON ci.id = cs.city_id
+        WHERE ${whereClause}
+        ORDER BY cs.id DESC
+        LIMIT ${limit}
+        OFFSET ${skip};
+    `;
 
-    const services = await prisma.CategoryService.findMany({
-        where,
-        include: {
-            category: {
-                select: {
-                    id: true,
-                    name: true,
-                },
-            },
-            locality: {
-                select: {
-                    id: true,
-                    name: true,
-                },
-            },
-            city: {
-                select: {
-                    id: true,
-                    name: true,
-                },
-            },
-        },
-        orderBy: [
-            {
-                city: {
-                    is_popular: "desc",
-                },
-            },
-            {
-                service_name: "asc",
-            },
-        ],
-        skip,
-        take: limit,
-        orderBy: data.orderBy || {
-            id: "desc",
-        },
-    });
+    services = JSON.parse(
+        JSON.stringify(services, (_, value) =>
+            typeof value === "bigint"
+                ? Number(value)
+                : value
+        )
+    );
 
-    const total = await prisma.CategoryService.count({
-        where,
-    });
+    const totalResult = await prisma.$queryRaw`
+        SELECT COUNT(cs.id) AS total
+        FROM category_services cs
+        LEFT JOIN categories c ON c.id = cs.category_id
+        LEFT JOIN localities l ON l.id = cs.locality_id
+        LEFT JOIN cities ci ON ci.id = cs.city_id
+        WHERE ${whereClause};
+    `;
+
+    const total = Number(totalResult[0].total);
 
     return {
         total,

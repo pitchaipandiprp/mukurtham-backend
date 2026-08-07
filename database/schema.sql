@@ -44,6 +44,7 @@ CREATE TABLE IF NOT EXISTS `category_services` (
   `service_banner_image` VARCHAR(250) DEFAULT NULL,
   `capacity` INT UNSIGNED NOT NULL DEFAULT 0,
   `number_of_rooms` INT UNSIGNED NOT NULL DEFAULT 0,
+  `facility_ids` VARCHAR(100) DEFAULT NULL,
   `car_parking` VARCHAR(10) DEFAULT NULL,
   `ac_available` VARCHAR(10) DEFAULT NULL,
   `latitude` VARCHAR(100) DEFAULT NULL,

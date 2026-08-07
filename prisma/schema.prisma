@@ -195,6 +195,7 @@ model CategoryService {
   capacity              Int       @default(0) @db.UnsignedInt
   number_of_rooms       Int       @default(0) @db.UnsignedInt
 
+  facility_ids          String?   @db.VarChar(100)
   car_parking           String?   @db.VarChar(10)
   ac_available          String?   @db.VarChar(10)
 

@@ -42,6 +42,7 @@ const createCategoryService = async (data) => {
         service_banner_image: data.service_banner_image || existingService?.service_banner_image || null,
         capacity: Number(data.capacity || 0),
         number_of_rooms: Number(data.number_of_rooms || 0),
+        facility_ids: data.facility_ids || null,
         car_parking: data.car_parking || null,
         ac_available: data.ac_available || null,
         latitude: String(data.latitude),
