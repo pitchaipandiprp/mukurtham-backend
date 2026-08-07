@@ -18,7 +18,7 @@ async function rolesSeeder(prisma) {
     await prisma.roles.createMany({
         data: roleSeeds.map((role) => ({
             ...role,
-            is_active: true,
+            is_active: 1,
             created_at: new Date(),
             updated_at: new Date(),
         })),
