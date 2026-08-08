@@ -15,6 +15,43 @@ const getFacilities = async (data) => {
     });
 };
 
+const getCities = async (filters = {}) => {
+    const status = filters.status ? Number(filters.status) : 1;
+    const stateId = filters.state_id ? Number(filters.state_id) : undefined;
+    const limit = filters.limit ? Number(filters.limit) : 10;
+    const search = filters.search ? String(filters.search) : "";
+
+    const cities = await prisma.$queryRaw`
+        SELECT
+            cities.id AS id,
+            cities.name AS name,
+            cities.state_id,
+            states.name AS state_name
+        FROM cities
+        INNER JOIN states
+            ON cities.state_id = states.id
+        WHERE
+            (${status} IS NULL OR cities.status = ${status})
+            AND (${stateId} IS NULL OR cities.state_id = ${stateId})
+            AND (
+                ${search ? String(search) : ""} = ""
+                OR cities.name LIKE ${`%${search ? String(search) : ""}%`}
+            )
+        ORDER BY
+            cities.is_popular DESC,
+            cities.id ASC
+        LIMIT ${limit}
+    `;
+
+    const result = cities.map((item) => ({
+        ...item,
+        id: Number(item.id),
+        state_id: Number(item.state_id),
+    }));
+
+    return result;
+};
+
 const getLocalities = async (filters = {}) => {
     const status = filters.status ? Number(filters.status) : 1;
     const stateId = filters.state_id ? Number(filters.state_id) : undefined;
@@ -64,6 +101,7 @@ const commonService = {
     getCategories,
     getFacilities,
     getLocalities,
+    getCities,
 };
 
 export default commonService;

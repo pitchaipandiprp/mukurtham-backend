@@ -9,7 +9,7 @@ router.post('/create', userValidator.createUser, userController.createUser);
 
 router.use(authMiddleware);
 
-router.get('/', userController.getUsers);
+router.post('/', userController.getUsers);
 router.post('/profile', userValidator.getProfile, userController.getProfile);
 router.post('/update', userValidator.updateUser, userController.updateUser);
 router.post('/change-password', userValidator.changePassword, userController.changePassword);

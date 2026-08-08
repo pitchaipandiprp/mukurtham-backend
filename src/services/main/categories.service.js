@@ -18,6 +18,11 @@ const categoryServiceSearch = async (data) => {
             PrismaClient.sql`cs.category_id = ${Number(data.category_id)}`
         );
     }
+    if (data?.category_name) {
+        conditions.push(
+            PrismaClient.sql`c.name LIKE ${`%${data?.category_name}%`}`
+        );
+    }
 
     // Locality
     if (data?.locality_id) {
