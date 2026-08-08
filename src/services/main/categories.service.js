@@ -80,6 +80,13 @@ const categoryServiceSearch = async (data) => {
         );
     }
 
+    // Locality
+    if (data?.city_name) {
+        conditions.push(
+            PrismaClient.sql`ci.name LIKE ${`%${data?.city_name}%`}`
+        );
+    }
+
     // Search
     if (data?.search_text?.trim()) {
         const keyword = `%${data.search_text.trim()}%`;
