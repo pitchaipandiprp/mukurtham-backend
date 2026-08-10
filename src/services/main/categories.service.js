@@ -152,9 +152,45 @@ const categoryServiceSearch = async (data) => {
     };
 };
 
+const getCategoryService = async (data) => {
+    const id = Number(data?.id);
+
+    if (!id) {
+        throw new AppError('Someting went wrong. Please provide a valid service ID');
+    }
+
+    const service = await prisma.categoryService.findUnique({
+        where: {
+            id: id,
+        },
+        include: {
+            state: {
+                select: {
+                    id: true,
+                    name: true,
+                },
+            },
+            city: {
+                select: {
+                    id: true,
+                    name: true,
+                },
+            },
+            locality: {
+                select: {
+                    id: true,
+                    name: true,
+                },
+            },
+        },
+    });
+
+    return service;
+};
 
 const categoriesService = {
     categoryServiceSearch,
+    getCategoryService,
 };
 
 export default categoriesService;

@@ -6,9 +6,18 @@ const categoryServiceSearch = async (req, res) => {
     Response.success(res, 'Success', categorySearch);
 };
 
+const getCategoryService = async (req, res) => {
+    try {
+        const result = await categoriesService.getCategoryService(req.body);
+        return Response.success(res, 'Service fetched successfully', result);
+    } catch (error) {
+        return Response.error(res, error.message, error.statusCode);
+    }
+};
 
 const categoriesController = {
     categoryServiceSearch,
+    getCategoryService,
 };
 
 export default categoriesController;
