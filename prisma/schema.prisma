@@ -223,9 +223,35 @@ model CategoryService {
   city                        City?     @relation(fields: [city_id], references: [id])
   locality                    Locality? @relation(fields: [locality_id], references: [id])
 
+  gallery Gallery[]
+
   @@index([category_id], map: "idx_category_services_category_id")
   @@index([user_id], map: "idx_category_services_user_id")
   @@index([locality_id], map: "idx_category_services_locality_id")
 
   @@map("category_services")
+}
+
+model Gallery {
+  id                  Int      @id @default(autoincrement()) @db.UnsignedInt
+  user_id             Int      @db.UnsignedInt
+  category_service_id Int      @db.UnsignedInt
+  gallery_type        String   @db.VarChar(10)
+  occasion_type       String?  @db.VarChar(100)
+  gallery_image       String?  @db.VarChar(250)
+  gallery_video       String?  @db.VarChar(250)
+  status              Int      @default(0) @db.UnsignedTinyInt
+  created_by          Int      @default(0) @db.UnsignedInt
+  updated_by          Int      @default(0) @db.UnsignedInt
+  created_at          DateTime?
+  updated_at          DateTime?
+
+  category_service    CategoryService  @relation(fields: [category_service_id], references: [id])
+
+  @@index([user_id], map: "idx_gallery_user_id")
+  @@index([category_service_id], map: "idx_gallery_category_service_id")
+  @@index([gallery_type], map: "idx_gallery_gallery_type")
+  @@index([occasion_type], map: "idx_gallery_occasion_type")
+
+  @@map("gallery")
 }

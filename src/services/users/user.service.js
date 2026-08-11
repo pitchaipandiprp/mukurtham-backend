@@ -157,12 +157,21 @@ const updateStatus = async (data) => {
         throw new AppError('Something went wrong. Please provide a valid status');
     }
 
+    let statusId = 0;
+    if (data.status === 'delete') {
+        statusId = 2; // Assuming 2 represents the deleted status
+    } else if (data.status === 'approve') {
+        statusId = 1; // Assuming 1 represents the approved status
+    } else if (data.status === 'disapprove') {
+        statusId = 0; // Assuming 0 represents the disapproved status
+    }
+
     const user = await prisma.users.update({
         where: {
             id: id,
         },
         data: {
-            status: data.status,
+            status: statusId,
         },
     });
 

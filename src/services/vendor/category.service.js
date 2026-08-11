@@ -204,11 +204,95 @@ const categoryServiceList = async (data) => {
     };
 };
 
-const deleteCategoryService = async (data) => {
+const categoryServiceRecords = async (data) => {
+
+    const where = { status: { not: 2 } }; //Except deleted records
+
+    if (data.user_id) {
+        where.user_id = Number(data.user_id);
+    }
+
+    if (data.search?.trim()) {
+        where.service_name = {
+            contains: data.search.trim(),
+        };
+    }
+
+    if (data.status !== undefined && data.status !== "") {
+        where.status = Number(data.status);
+    }
+
+    if (data.category_id) {
+        where.category_id = Number(data.category_id);
+    }
+
+    if (data.state_id) {
+        where.state_id = Number(data.state_id);
+    }
+
+    if (data.city_id) {
+        where.city_id = Number(data.city_id);
+    }
+
+    if (data.locality_id) {
+        where.locality_id = Number(data.locality_id);
+    }
+
+    const service = await prisma.categoryService.findMany({
+        where,
+
+        include: {
+            category: {
+                select: {
+                    name: true,
+                },
+            },
+
+            state: {
+                select: {
+                    name: true,
+                },
+            },
+
+            city: {
+                select: {
+                    name: true,
+                },
+            },
+
+            locality: {
+                select: {
+                    name: true,
+                },
+            },
+        },
+
+        orderBy: {
+            id: "desc",
+        },
+    });
+
+    return service;
+};
+
+const updateCategoryServiceStatus = async (data) => {
     const id = Number(data?.id);
 
     if (!id) {
-        throw new AppError('Someting went wrong. Please provide a valid service ID');
+        throw new AppError('Something went wrong. Please provide a valid service ID');
+    }
+
+    if (data.status === undefined || data.status === null) {
+        throw new AppError('Something went wrong. Please provide a valid status');
+    }
+
+    let statusId = 0;
+    if (data.status === 'delete') {
+        statusId = 2; // Assuming 2 represents the deleted status
+    } else if (data.status === 'approve') {
+        statusId = 1; // Assuming 1 represents the approved status
+    } else if (data.status === 'disapprove') {
+        statusId = 0; // Assuming 0 represents the disapproved status
     }
 
     const service = await prisma.categoryService.update({
@@ -216,7 +300,7 @@ const deleteCategoryService = async (data) => {
             id: id,
         },
         data: {
-            status: 2,
+            status: statusId,
         },
     });
 
@@ -227,7 +311,8 @@ const categoryService = {
     createCategoryService,
     getCategoryService,
     categoryServiceList,
-    deleteCategoryService,
+    categoryServiceRecords,
+    updateCategoryServiceStatus,
 };
 
 export default categoryService;

@@ -16,7 +16,6 @@ router.post('/send-otp', sendOtpValidator, authController.sendOtp);
 router.post('/verify-otp', verifyOtpValidator, authController.verifyOtp);
 router.post('/otp-login', otpLoginValidator, authController.otpLogin);
 router.post('/refresh-token', authController.refreshToken);
-// router.post('/forgot-password', authController.forgotPassword);
 router.post('/logout', authController.logout);
 
 export default router;
