@@ -95,7 +95,21 @@ const galleryList = async (data) => {
     }
 
     if (data.search?.trim()) {
-        where.gallery_type = data.search.trim();
+        const search = data.search.trim();
+        where.OR = [
+            {
+                category_service: {
+                    service_name: {
+                        contains: search,
+                    },
+                },
+            },
+            {
+                occasion_type: {
+                    contains: search,
+                },
+            },
+        ];
     }
 
     const page = Number(data.page || 1);

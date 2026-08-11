@@ -5,6 +5,7 @@ import categorySeeder from './seeders/category.seeder.js';
 import locationSeeder from './seeders/location.seeder.js';
 import categoryServiceSeeder from './seeders/category-service.seeder.js';
 import facilitySeeder from './seeders/facility.seeder.js';
+import gallerySeeder from './seeders/gallery.seeder.js';
 const prisma = new PrismaClient();
 
 async function main() {
@@ -18,6 +19,7 @@ async function main() {
     await prisma.$executeRawUnsafe("TRUNCATE TABLE states");
     await prisma.$executeRawUnsafe("TRUNCATE TABLE cities");
     await prisma.$executeRawUnsafe("TRUNCATE TABLE localities");
+    await prisma.$executeRawUnsafe("TRUNCATE TABLE  gallery");
     await prisma.$executeRawUnsafe("SET FOREIGN_KEY_CHECKS = 1");
 
     await rolesSeeder(prisma);
@@ -26,6 +28,7 @@ async function main() {
     await facilitySeeder(prisma);
     await locationSeeder(prisma);
     await categoryServiceSeeder(prisma);
+    await gallerySeeder(prisma);
 
     console.log('Seed completed.');
 }
