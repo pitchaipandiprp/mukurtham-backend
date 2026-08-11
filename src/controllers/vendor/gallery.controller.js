@@ -44,10 +44,20 @@ const galleryList = async (req, res) => {
     }
 };
 
+const galleryRecords = async (req, res) => {
+    try {
+        const result = await galleryService.galleryRecords(req.body);
+        return Response.success(res, 'Gallery fetched successfully', result);
+    } catch (error) {
+        return Response.error(res, error.message, error.statusCode);
+    }
+};
+
 const galleryController = {
     createGallery,
     getGallery,
     galleryList,
+    galleryRecords,
     updateGalleryStatus,
 };
 

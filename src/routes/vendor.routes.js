@@ -39,6 +39,7 @@ router.post(
 router.post('/get-gallery', galleryController.getGallery);
 router.post('/update-gallery-status', galleryController.updateGalleryStatus);
 router.post('/gallery-list', galleryController.galleryList);
+router.post('/gallery-records', galleryController.galleryRecords);
 
 
 export default router;
