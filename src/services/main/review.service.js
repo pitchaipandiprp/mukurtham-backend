@@ -1,12 +1,18 @@
 import prisma from '../../config/prisma.js';
 import AppError from '../../utils/app-error.js';
 
-const serviceReviewsRecords = async (data) => {
+const serviceReviewRecords = async (data) => {
+
+    const categoryServiceId = Number(data.category_service_id);
+
+    if (!categoryServiceId) {
+        throw new AppError('Please provide a valid category service ID');
+    }
 
     const where = { status: { not: 2 } };
 
-    if (data.category_service_id) {
-        where.category_service_id = Number(data.category_service_id);
+    if (categoryServiceId) {
+        where.category_service_id = categoryServiceId;
     }
 
     if (data.rating) {
@@ -83,6 +89,7 @@ const serviceReviewsRecords = async (data) => {
         orderBy: data.orderBy || {
             id: "desc",
         },
+
         take: limit,
     });
 
@@ -100,7 +107,7 @@ const serviceReviewsRecords = async (data) => {
 };
 
 const reviewService = {
-    serviceReviewsRecords,
+    serviceReviewRecords,
 };
 
 export default reviewService;

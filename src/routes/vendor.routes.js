@@ -4,6 +4,7 @@ import categoryServiceController from '../controllers/vendor/category-service.co
 import categoryServiceValidator from '../validators/vendor/category-service.validator.js';
 import galleryController from '../controllers/vendor/gallery.controller.js';
 import galleryValidator from '../validators/vendor/gallery.validator.js';
+import serviceReviewsController from '../controllers/vendor/service-reviews.controller.js';
 import { upload } from "../middlewares/upload.middleware.js";
 
 const router = express.Router();
@@ -41,5 +42,8 @@ router.post('/update-gallery-status', galleryController.updateGalleryStatus);
 router.post('/gallery-list', galleryController.galleryList);
 router.post('/gallery-records', galleryController.galleryRecords);
 
+router.post('/service-review-list', serviceReviewsController.serviceReviewList);
+router.post('/service-review-records', serviceReviewsController.serviceReviewRecords);
+router.post('/update-service-review-status', serviceReviewsController.updateServiceReviewStatus);
 
 export default router;

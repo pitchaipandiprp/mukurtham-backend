@@ -9,6 +9,6 @@ router.post('/category-service-search', categoriesController.categoryServiceSear
 router.post('/get-category-service', categoriesController.getCategoryService);
 router.post('/gallery-records', galleryController.galleryRecords);
 
-router.post('/service-review-records', serviceReviewController.serviceReviewsRecords);
+router.post('/service-review-records', serviceReviewController.serviceReviewRecords);
 
 export default router;
