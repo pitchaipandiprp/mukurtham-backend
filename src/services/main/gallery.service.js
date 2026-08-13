@@ -5,9 +5,6 @@ const galleryRecords = async (data) => {
 
     const where = { status: { not: 2 } };
 
-    // if (data.user_id) {
-    //     where.user_id = Number(data.user_id);
-    // }
 
     if (data.category_service_id) {
         where.category_service_id = Number(data.category_service_id);

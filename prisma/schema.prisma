@@ -51,6 +51,8 @@ model Users {
 
   role           Roles     @relation(fields: [role_id], references: [id])
 
+  service_reviews ServiceReview[]
+
   @@index([role_id], map: "idx_users_role_id")
 
   @@map("users")
@@ -224,6 +226,7 @@ model CategoryService {
   locality                    Locality? @relation(fields: [locality_id], references: [id])
 
   gallery Gallery[]
+  service_reviews ServiceReview[]
 
   @@index([category_id], map: "idx_category_services_category_id")
   @@index([user_id], map: "idx_category_services_user_id")
@@ -254,4 +257,33 @@ model Gallery {
   @@index([occasion_type], map: "idx_gallery_occasion_type")
 
   @@map("gallery")
+}
+
+
+model ServiceReview {
+  id                  Int      @id @default(autoincrement()) @db.UnsignedInt
+
+  user_id             Int      @db.UnsignedInt
+  category_service_id Int      @db.UnsignedInt
+
+  rating              Int      @default(0) @db.UnsignedTinyInt
+  review_title        String?  @db.VarChar(250)
+  review_description  String?  @db.Text
+
+  status              Int      @default(0) @db.UnsignedTinyInt
+
+  created_by          Int      @default(0) @db.UnsignedInt
+  updated_by          Int      @default(0) @db.UnsignedInt
+
+  created_at          DateTime? @db.DateTime
+  updated_at          DateTime? @db.DateTime
+
+  user Users  @relation(fields: [user_id], references: [id])
+  category_service    CategoryService  @relation(fields: [category_service_id], references: [id])
+
+  @@index([user_id], map: "idx_service_reviews_user_id")
+  @@index([category_service_id], map: "idx_service_reviews_category_service_id")
+  @@index([rating], map: "idx_service_reviews_rating")
+
+  @@map("service_reviews")
 }

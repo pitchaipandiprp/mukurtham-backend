@@ -235,3 +235,27 @@ CREATE TABLE IF NOT EXISTS `gallery` (
   KEY `idx_gallery_category_service_id` (`category_service_id`),
   KEY `idx_gallery_gallery_type` (`gallery_type`)
 );
+
+CREATE TABLE IF NOT EXISTS `service_reviews` (
+    `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+
+    `user_id` INT UNSIGNED NOT NULL,
+    `category_service_id` INT UNSIGNED NOT NULL,
+
+    `rating` TINYINT UNSIGNED NOT NULL DEFAULT 0,
+    `review_title` VARCHAR(250) DEFAULT NULL,
+    `review_description` TEXT DEFAULT NULL,
+
+    `status` TINYINT UNSIGNED NOT NULL DEFAULT 0,
+
+    `created_by` INT UNSIGNED NOT NULL DEFAULT 0,
+    `updated_by` INT UNSIGNED NOT NULL DEFAULT 0,
+
+    `created_at` DATETIME DEFAULT NULL,
+    `updated_at` DATETIME DEFAULT NULL,
+
+    PRIMARY KEY (`id`),
+    KEY `idx_service_reviews_user_id` (`user_id`),
+    KEY `idx_service_reviews_category_service_id` (`category_service_id`),
+    KEY `idx_service_reviews_rating` (`rating`)
+);

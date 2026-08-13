@@ -185,7 +185,28 @@ const getCategoryService = async (data) => {
         },
     });
 
-    return service;
+    const reviewSummary = await prisma.serviceReview.aggregate({
+        where: {
+            category_service_id: id,
+            status: {
+                not: 2,
+            },
+        },
+
+        _avg: {
+            rating: true,
+        },
+
+        _count: {
+            rating: true,
+        },
+    });
+
+    return {
+        ...service,
+        totalReviews: reviewSummary._count.rating,
+        averageRating: reviewSummary._avg.rating || 0,
+    };
 };
 
 const categoriesService = {
