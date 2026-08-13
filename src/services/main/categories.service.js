@@ -153,15 +153,16 @@ const categoryServiceSearch = async (data) => {
 };
 
 const getCategoryService = async (data) => {
-    const id = Number(data?.id);
+    const categoryServiceId = Number(data?.category_service_id);
 
-    if (!id) {
+    if (!categoryServiceId) {
         throw new AppError('Someting went wrong. Please provide a valid service ID');
     }
 
     const service = await prisma.categoryService.findUnique({
         where: {
-            id: id,
+            id: categoryServiceId,
+            status: 1
         },
         include: {
             state: {
@@ -185,12 +186,15 @@ const getCategoryService = async (data) => {
         },
     });
 
+
+    if (!service) {
+        return;
+    }
+
     const reviewSummary = await prisma.serviceReview.aggregate({
         where: {
-            category_service_id: id,
-            status: {
-                not: 2,
-            },
+            category_service_id: categoryServiceId,
+            status: 1,
         },
 
         _avg: {
@@ -204,8 +208,8 @@ const getCategoryService = async (data) => {
 
     return {
         ...service,
-        totalReviews: reviewSummary._count.rating,
-        averageRating: reviewSummary._avg.rating || 0,
+        totalReviews: reviewSummary?._count.rating || 0,
+        averageRating: reviewSummary?._avg.rating || 0,
     };
 };
 

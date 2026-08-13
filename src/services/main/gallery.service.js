@@ -3,7 +3,7 @@ import AppError from '../../utils/app-error.js';
 
 const galleryRecords = async (data) => {
 
-    const where = { status: { not: 2 } };
+    const where = { status: 1 };
 
 
     if (data.category_service_id) {

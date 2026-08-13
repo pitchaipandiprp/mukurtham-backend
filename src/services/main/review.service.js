@@ -9,7 +9,7 @@ const serviceReviewRecords = async (data) => {
         throw new AppError('Please provide a valid category service ID');
     }
 
-    const where = { status: { not: 2 } };
+    const where = { status: 1 };
 
     if (categoryServiceId) {
         where.category_service_id = categoryServiceId;
