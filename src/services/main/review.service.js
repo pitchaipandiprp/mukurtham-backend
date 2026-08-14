@@ -1,6 +1,39 @@
 import prisma from '../../config/prisma.js';
 import AppError from '../../utils/app-error.js';
 
+const createServiceReview = async (data) => {
+
+    const userId = Number(data.user_id);
+    if (!userId) {
+        throw new AppError('Please provide a valid user ID');
+    }
+
+    const categoryServiceId = Number(data.category_service_id);
+    if (!categoryServiceId) {
+        throw new AppError('Please provide a valid category service ID');
+    }
+
+    if (!data.review_description) {
+        throw new AppError('Please provide a valid review description');
+    }
+
+    const insertData = {
+        user_id: userId,
+        category_service_id: categoryServiceId,
+        rating: Number(data.rating) || 1,
+        review_title: data.review_title || 'No Title',
+        review_description: data.review_description || null,
+        status: 0,
+        created_by: userId,
+        updated_by: userId,
+        created_at: new Date(),
+        updated_at: new Date(),
+    };
+
+    return await prisma.serviceReview.create({
+        data: insertData,
+    });
+};
 
 const serviceReviewList = async (data) => {
 
@@ -218,6 +251,7 @@ const serviceReviewRecords = async (data) => {
 };
 
 const reviewService = {
+    createServiceReview,
     serviceReviewList,
     serviceReviewRecords,
 };
