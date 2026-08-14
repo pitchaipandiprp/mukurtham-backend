@@ -8,6 +8,12 @@ const createServiceDate = [
         .isInt({ min: 1 })
         .withMessage('user_id must be a positive integer'),
 
+    body('category_service_id')
+        .notEmpty()
+        .withMessage('category_service_id is required')
+        .isInt({ min: 1 })
+        .withMessage('category_service_id must be a positive integer'),
+
     body('date_type')
         .optional({ values: 'falsy' })
         .isString()

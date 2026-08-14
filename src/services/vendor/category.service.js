@@ -81,7 +81,7 @@ const getCategoryService = async (data) => {
     const id = Number(data?.id);
 
     if (!id) {
-        throw new AppError('Someting went wrong. Please provide a valid service ID');
+        throw new AppError('Please provide a valid service ID');
     }
 
     const service = await prisma.categoryService.findUnique({
@@ -118,7 +118,7 @@ const categoryServiceList = async (data) => {
 
     const userId = Number(data.user_id);
     if (!userId) {
-        throw new AppError('Someting went wrong. Please provide a valid user ID');
+        throw new AppError('Please provide a valid user ID');
     }
 
     const where = { status: { not: 2 } }; //Except deleted records
@@ -205,6 +205,11 @@ const categoryServiceList = async (data) => {
 };
 
 const categoryServiceRecords = async (data) => {
+
+    const userId = Number(data.user_id);
+    if (!userId) {
+        throw new AppError('Please provide a valid user ID');
+    }
 
     const where = { status: { not: 2 } }; //Except deleted records
 

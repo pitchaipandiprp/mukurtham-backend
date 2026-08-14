@@ -156,7 +156,7 @@ const getCategoryService = async (data) => {
     const categoryServiceId = Number(data?.category_service_id);
 
     if (!categoryServiceId) {
-        throw new AppError('Someting went wrong. Please provide a valid service ID');
+        throw new AppError('Please provide a valid service ID');
     }
 
     const service = await prisma.categoryService.findUnique({

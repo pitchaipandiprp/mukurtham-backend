@@ -227,6 +227,7 @@ model CategoryService {
 
   gallery Gallery[]
   service_reviews ServiceReview[]
+  service_dates ServiceDate[]
 
   @@index([category_id], map: "idx_category_services_category_id")
   @@index([user_id], map: "idx_category_services_user_id")
@@ -301,6 +302,8 @@ model ServiceDate {
   updated_by            Int           @default(0) @db.UnsignedInt
   created_at            DateTime?     @db.DateTime
   updated_at            DateTime?     @db.DateTime
+
+  category_service    CategoryService  @relation(fields: [category_service_id], references: [id])
 
   @@index([category_id], map: "idx_service_dates_category_id")
   @@index([date_type], map: "idx_service_dates_date_type")
