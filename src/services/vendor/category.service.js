@@ -279,11 +279,11 @@ const updateCategoryServiceStatus = async (data) => {
     const id = Number(data?.id);
 
     if (!id) {
-        throw new AppError('Something went wrong. Please provide a valid service ID');
+        throw new AppError('Please provide a valid service ID');
     }
 
     if (data.status === undefined || data.status === null) {
-        throw new AppError('Something went wrong. Please provide a valid status');
+        throw new AppError('Please provide a valid status');
     }
 
     let statusId = 0;

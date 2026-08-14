@@ -21,7 +21,7 @@ const createServiceReview = async (data) => {
         user_id: userId,
         category_service_id: categoryServiceId,
         rating: Number(data.rating) || 1,
-        review_title: data.review_title || 'No Title',
+        review_title: data.review_title || null,
         review_description: data.review_description || null,
         status: 0,
         created_by: userId,

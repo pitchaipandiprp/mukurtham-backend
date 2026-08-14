@@ -287,3 +287,23 @@ model ServiceReview {
 
   @@map("service_reviews")
 }
+
+model ServiceDate {
+  id                    Int           @id @default(autoincrement()) @db.UnsignedInt
+  user_id               Int           @db.UnsignedInt
+  category_id           Int           @default(0) @db.UnsignedInt
+  category_service_id   Int           @default(0) @db.UnsignedInt
+  date_type             String?       @db.VarChar(50)
+  service_date          DateTime?     @db.Date
+
+  status                Int           @default(0) @db.UnsignedTinyInt
+  created_by            Int           @default(0) @db.UnsignedInt
+  updated_by            Int           @default(0) @db.UnsignedInt
+  created_at            DateTime?     @db.DateTime
+  updated_at            DateTime?     @db.DateTime
+
+  @@index([category_id], map: "idx_service_dates_category_id")
+  @@index([date_type], map: "idx_service_dates_date_type")
+
+  @@map("service_dates")
+}

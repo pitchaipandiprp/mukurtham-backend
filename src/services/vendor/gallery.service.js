@@ -55,7 +55,7 @@ const getGallery = async (data) => {
     const id = Number(data?.id);
 
     if (!id) {
-        throw new AppError('Something went wrong. Please provide a valid gallery ID');
+        throw new AppError('Please provide a valid gallery ID');
     }
 
     return await prisma.gallery.findUnique({
@@ -69,7 +69,7 @@ const galleryList = async (data) => {
     const userId = Number(data.user_id);
 
     if (!userId) {
-        throw new AppError('Something went wrong. Please provide a valid user ID');
+        throw new AppError('Please provide a valid user ID');
     }
 
     const where = { status: { not: 2 } };
@@ -148,6 +148,12 @@ const galleryList = async (data) => {
 
 const galleryRecords = async (data) => {
 
+    const userId = Number(data.user_id);
+
+    if (!userId) {
+        throw new AppError('Please provide a valid user ID');
+    }
+
     const where = { status: { not: 2 } };
 
     if (data.user_id) {
@@ -209,11 +215,11 @@ const updateGalleryStatus = async (data) => {
     const id = Number(data?.id);
 
     if (!id) {
-        throw new AppError('Something went wrong. Please provide a valid gallery ID');
+        throw new AppError('Please provide a valid gallery ID');
     }
 
     if (data.status === undefined || data.status === null) {
-        throw new AppError('Something went wrong. Please provide a valid status');
+        throw new AppError('Please provide a valid status');
     }
 
     let statusId = 0;

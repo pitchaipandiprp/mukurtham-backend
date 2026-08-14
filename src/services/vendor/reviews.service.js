@@ -6,13 +6,13 @@ const serviceReviewList = async (data) => {
     const userId = Number(data.user_id);
 
     if (!userId) {
-        throw new AppError('Something went wrong. Please provide a valid user ID');
+        throw new AppError('Please provide a valid user ID');
     }
 
     const categoryServiceId = Number(data.category_service_id);
 
     if (!categoryServiceId) {
-        throw new AppError('Something went wrong. Please provide a valid category service ID');
+        throw new AppError('Please provide a valid category service ID');
     }
 
     const where = { status: { not: 2 } };
@@ -144,13 +144,13 @@ const serviceReviewRecords = async (data) => {
     const userId = Number(data.user_id);
 
     if (!userId) {
-        throw new AppError('Something went wrong. Please provide a valid user ID');
+        throw new AppError('Please provide a valid user ID');
     }
 
     const categoryServiceId = Number(data.category_service_id);
 
     if (!categoryServiceId) {
-        throw new AppError('Something went wrong. Please provide a valid category service ID');
+        throw new AppError('Please provide a valid category service ID');
     }
 
     const where = { status: { not: 2 } };
@@ -272,11 +272,11 @@ const updateServiceReviewStatus = async (data) => {
     const id = Number(data?.id);
 
     if (!id) {
-        throw new AppError('Something went wrong. Please provide a valid review ID');
+        throw new AppError('Please provide a valid review ID');
     }
 
     if (data.status === undefined || data.status === null) {
-        throw new AppError('Something went wrong. Please provide a valid status');
+        throw new AppError('Please provide a valid status');
     }
 
     let statusId = 0;
