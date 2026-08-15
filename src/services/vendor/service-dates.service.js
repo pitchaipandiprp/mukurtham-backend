@@ -150,46 +150,38 @@ const serviceDateList = async (data) => {
 
 const serviceDateRecords = async (data) => {
     const userId = Number(data.user_id);
+
     if (!userId) {
         throw new AppError('Please provide a valid user ID');
     }
 
-    const categoryServiceId = Number(data?.category_service_id);
+    const categoryServiceId = Number(data.category_service_id);
 
-    const userWhere = {
-        user_id: userId,
-    };
-
-    if (categoryServiceId > 0) {
-        userWhere.category_service_id = categoryServiceId;
+    if (!categoryServiceId) {
+        throw new AppError('Please provide a valid category service ID');
     }
 
     const where = {
         status: {
             not: 2,
         },
+
         OR: [
             {
                 date_type: {
-                    in: ["Waxing", "Waning"],
+                    in: ['Waxing', 'Waning'],
                 },
             },
-            userWhere,
-        ],
-    };
-
-    const include = {
-        category_service: {
-            select: {
-                service_name: true,
+            {
+                user_id: userId,
+                category_service_id: categoryServiceId,
             },
-        },
+        ],
     };
 
     return await prisma.serviceDate.findMany({
         where,
-        include,
-        orderBy: data.orderBy || { id: 'desc' },
+        orderBy: data.orderBy || { id: 'desc', },
     });
 };
 
