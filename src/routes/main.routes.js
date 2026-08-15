@@ -3,6 +3,7 @@ import categoriesController from '../controllers/main/categories.controller.js';
 import galleryController from '../controllers/main/gallery.controller.js';
 import serviceReviewController from '../controllers/main/service-review.controller.js';
 import serviceReviewValidator from '../validators/main/service-review.validator.js';
+import serviceDatesController from '../controllers/main/service-dates.controller.js';
 
 const router = express.Router();
 
@@ -13,5 +14,7 @@ router.post('/gallery-records', galleryController.galleryRecords);
 router.post('/create-service-review', serviceReviewValidator.createServiceReview, serviceReviewController.createServiceReview);
 router.post('/service-review-list', serviceReviewController.serviceReviewList);
 router.post('/service-review-records', serviceReviewController.serviceReviewRecords);
+
+router.post('/service-date-records', serviceDatesController.serviceDateRecords);
 
 export default router;

@@ -2,7 +2,6 @@ import prisma from '../../config/prisma.js';
 import AppError from '../../utils/app-error.js';
 import { statusMap } from '../../config/common.js';
 
-const parseDate = (value) => value ? new Date(`${value}T00:00:00.000Z`) : null;
 
 const createServiceDate = async (data) => {
     const userId = Number(data.user_id);
@@ -12,7 +11,7 @@ const createServiceDate = async (data) => {
         user_id: Number(data.user_id),
         category_service_id: Number(data.category_service_id) || 0,
         date_type: data.date_type || null,
-        service_date: parseDate(data.service_date),
+        service_date: data.service_date || null,
         status: Number(data.status ?? 0),
     };
 
@@ -75,7 +74,7 @@ const buildWhere = (data) => {
     }
 
     if (data.service_date) {
-        where.service_date = parseDate(data.service_date);
+        where.service_date = data.service_date;
     }
 
     if (data.status !== undefined && data.status !== '') {
