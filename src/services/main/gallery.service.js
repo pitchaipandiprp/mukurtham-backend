@@ -2,12 +2,17 @@ import prisma from '../../config/prisma.js';
 import AppError from '../../utils/app-error.js';
 
 const galleryRecords = async (data) => {
+    const categoryServiceId = Number(data?.category_service_id);
+
+    if (!categoryServiceId) {
+        throw new AppError('Please provide a valid service ID');
+    }
 
     const where = { status: 1 };
 
 
-    if (data.category_service_id) {
-        where.category_service_id = Number(data.category_service_id);
+    if (categoryServiceId) {
+        where.category_service_id = categoryServiceId;
     }
 
     if (data.gallery_type) {
@@ -16,28 +21,6 @@ const galleryRecords = async (data) => {
 
     if (data.occasion_type !== undefined && data.occasion_type !== '') {
         where.occasion_type = Number(data.occasion_type);
-    }
-
-    if (data.status !== undefined && data.status !== '') {
-        where.status = Number(data.status);
-    }
-
-    if (data.search?.trim()) {
-        const search = data.search.trim();
-        where.OR = [
-            {
-                category_service: {
-                    service_name: {
-                        contains: search,
-                    },
-                },
-            },
-            {
-                occasion_type: {
-                    contains: search,
-                },
-            },
-        ];
     }
 
     const gallery = await prisma.gallery.findMany({

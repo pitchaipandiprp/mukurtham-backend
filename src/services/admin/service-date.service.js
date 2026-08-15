@@ -10,8 +10,8 @@ const createServiceDate = async (data) => {
 
     const insertData = {
         user_id: Number(data.user_id),
-        category_id: Number(data.category_id) || 0,
-        category_service_id: Number(data.category_service_id) || 0,
+        category_id: Number(data.category_id) || null,
+        category_service_id: Number(data.category_service_id) || null,
         date_type: data.date_type || null,
         service_date: parseDate(data.service_date),
         status: Number(data.status ?? 0),

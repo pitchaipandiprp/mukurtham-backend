@@ -17,8 +17,8 @@ CREATE TABLE IF NOT EXISTS `categories` (
     `color` VARCHAR(20) DEFAULT NULL,
     `sort_order` INT UNSIGNED NOT NULL DEFAULT 0,
     `status` TINYINT UNSIGNED NOT NULL DEFAULT 1,
-    `created_by` INT UNSIGNED NOT NULL DEFAULT 0,
-    `updated_by` INT UNSIGNED NOT NULL DEFAULT 0,
+    `created_by` INT UNSIGNED DEFAULT NULL,
+    `updated_by` INT UNSIGNED DEFAULT NULL,
     `created_at` DATETIME DEFAULT NULL,
     `updated_at` DATETIME DEFAULT NULL,
 
@@ -35,9 +35,9 @@ CREATE TABLE IF NOT EXISTS `category_services` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `user_id` INT UNSIGNED NOT NULL,
   `category_id` INT UNSIGNED NOT NULL,
-  `state_id` INT UNSIGNED NOT NULL DEFAULT 0,
-  `city_id` INT UNSIGNED NOT NULL DEFAULT 0,
-  `locality_id` INT UNSIGNED NOT NULL DEFAULT 0,
+  `state_id` INT UNSIGNED DEFAULT NULL,
+  `city_id` INT UNSIGNED DEFAULT NULL,
+  `locality_id` INT UNSIGNED DEFAULT NULL,
   `service_name` VARCHAR(250) NOT NULL,
   `service_description` TEXT DEFAULT NULL,
   `service_address` TEXT DEFAULT NULL,
@@ -56,8 +56,8 @@ CREATE TABLE IF NOT EXISTS `category_services` (
   `tax_amount` DECIMAL(10,2) NOT NULL DEFAULT 0.00,
   `final_amount` DECIMAL(10,2) NOT NULL DEFAULT 0.00,
   `status` TINYINT UNSIGNED NOT NULL DEFAULT 0,
-  `created_by` INT UNSIGNED NOT NULL DEFAULT 0,
-  `updated_by` INT UNSIGNED NOT NULL DEFAULT 0,
+  `created_by` INT UNSIGNED DEFAULT NULL,
+  `updated_by` INT UNSIGNED DEFAULT NULL,
   `created_at` DATETIME DEFAULT NULL,
   `updated_at` DATETIME DEFAULT NULL,
 
@@ -80,8 +80,8 @@ CREATE TABLE IF NOT EXISTS `cities` (
   `name` VARCHAR(100) NOT NULL,
   `is_popular` TINYINT UNSIGNED NOT NULL DEFAULT 0,
   `status` TINYINT UNSIGNED NOT NULL DEFAULT 1,
-  `created_by` INT UNSIGNED NOT NULL DEFAULT 0,
-  `updated_by` INT UNSIGNED NOT NULL DEFAULT 0,
+  `created_by` INT UNSIGNED DEFAULT NULL,
+  `updated_by` INT UNSIGNED DEFAULT NULL,
   `created_at` DATETIME DEFAULT NULL,
   `updated_at` DATETIME DEFAULT NULL,
 
@@ -99,8 +99,8 @@ CREATE TABLE IF NOT EXISTS `facilities` (
   `category_id` INT UNSIGNED NOT NULL,
   `name` VARCHAR(100) NOT NULL,
   `status` TINYINT UNSIGNED NOT NULL DEFAULT 1,
-  `created_by` INT UNSIGNED NOT NULL DEFAULT 0,
-  `updated_by` INT UNSIGNED NOT NULL DEFAULT 0,
+  `created_by` INT UNSIGNED DEFAULT NULL,
+  `updated_by` INT UNSIGNED DEFAULT NULL,
   `created_at` DATETIME DEFAULT NULL,
   `updated_at` DATETIME DEFAULT NULL,
 
@@ -119,8 +119,8 @@ CREATE TABLE IF NOT EXISTS `localities` (
   `city_id` INT UNSIGNED NOT NULL,
   `name` VARCHAR(100) NOT NULL,
   `status` TINYINT UNSIGNED NOT NULL DEFAULT 1,
-  `created_by` INT UNSIGNED NOT NULL DEFAULT 0,
-  `updated_by` INT UNSIGNED NOT NULL DEFAULT 0,
+  `created_by` INT UNSIGNED DEFAULT NULL,
+  `updated_by` INT UNSIGNED DEFAULT NULL,
   `created_at` DATETIME DEFAULT NULL,
   `updated_at` DATETIME DEFAULT NULL,
 
@@ -177,8 +177,8 @@ CREATE TABLE IF NOT EXISTS `states` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(100) NOT NULL,
   `status` TINYINT UNSIGNED NOT NULL DEFAULT 1,
-  `created_by` INT UNSIGNED NOT NULL DEFAULT 0,
-  `updated_by` INT UNSIGNED NOT NULL DEFAULT 0,
+  `created_by` INT UNSIGNED DEFAULT NULL,
+  `updated_by` INT UNSIGNED DEFAULT NULL,
   `created_at` DATETIME DEFAULT NULL,
   `updated_at` DATETIME DEFAULT NULL,
 
@@ -201,8 +201,8 @@ CREATE TABLE IF NOT EXISTS `users` (
   `password` VARCHAR(200) NOT NULL,
   `refresh_token` TEXT DEFAULT NULL,
   `status` TINYINT UNSIGNED NOT NULL DEFAULT 0,
-  `created_by` INT UNSIGNED NOT NULL DEFAULT 0,
-  `updated_by` INT UNSIGNED NOT NULL DEFAULT 0,
+  `created_by` INT UNSIGNED DEFAULT NULL,
+  `updated_by` INT UNSIGNED DEFAULT NULL,
   `created_at` DATETIME DEFAULT NULL,
   `updated_at` DATETIME DEFAULT NULL,
 
@@ -224,8 +224,8 @@ CREATE TABLE IF NOT EXISTS `gallery` (
   `gallery_video` VARCHAR(250) DEFAULT NULL,
 
   `status` TINYINT UNSIGNED NOT NULL DEFAULT 0,
-  `created_by` INT UNSIGNED NOT NULL DEFAULT 0,
-  `updated_by` INT UNSIGNED NOT NULL DEFAULT 0,
+  `created_by` INT UNSIGNED DEFAULT NULL,
+  `updated_by` INT UNSIGNED DEFAULT NULL,
   `created_at` DATETIME DEFAULT NULL,
   `updated_at` DATETIME DEFAULT NULL,
 
@@ -248,8 +248,8 @@ CREATE TABLE IF NOT EXISTS `service_reviews` (
 
     `status` TINYINT UNSIGNED NOT NULL DEFAULT 0,
 
-    `created_by` INT UNSIGNED NOT NULL DEFAULT 0,
-    `updated_by` INT UNSIGNED NOT NULL DEFAULT 0,
+    `created_by` INT UNSIGNED DEFAULT NULL,
+    `updated_by` INT UNSIGNED DEFAULT NULL,
 
     `created_at` DATETIME DEFAULT NULL,
     `updated_at` DATETIME DEFAULT NULL,
@@ -263,19 +263,19 @@ CREATE TABLE IF NOT EXISTS `service_reviews` (
 CREATE TABLE IF NOT EXISTS `service_dates` (
     `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
     `user_id` INT UNSIGNED NOT NULL,
-    `category_id` INT UNSIGNED NOT NULL DEFAULT 0,
-    `category_service_id` INT UNSIGNED NOT NULL DEFAULT 0,
+    `category_id` INT UNSIGNED DEFAULT NULL,
+    `category_service_id` INT UNSIGNED DEFAULT NULL,
     `date_type` VARCHAR(50) DEFAULT NULL,
     `service_date` DATE DEFAULT NULL,
 
     `status` TINYINT UNSIGNED NOT NULL DEFAULT 0,
-    `created_by` INT UNSIGNED NOT NULL DEFAULT 0,
-    `updated_by` INT UNSIGNED NOT NULL DEFAULT 0,
+    `created_by` INT UNSIGNED DEFAULT NULL,
+    `updated_by` INT UNSIGNED DEFAULT NULL,
     `created_at` DATETIME DEFAULT NULL,
     `updated_at` DATETIME DEFAULT NULL,
 
     PRIMARY KEY (`id`),
     KEY `idx_service_dates_category_id` (`category_id`),
-    KEY `idx_service_dates_type` (`type`)
+    KEY `idx_service_dates_type` (`date_type`)
 );
 

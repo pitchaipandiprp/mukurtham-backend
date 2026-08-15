@@ -43,8 +43,8 @@ model Users {
 
   status         Int       @default(0) @db.UnsignedTinyInt
 
-  created_by     Int       @default(0) @db.UnsignedInt
-  updated_by     Int       @default(0) @db.UnsignedInt
+  created_by     Int?      @db.UnsignedInt
+  updated_by     Int?      @db.UnsignedInt
 
   created_at     DateTime? @db.DateTime
   updated_at     DateTime? @db.DateTime
@@ -85,8 +85,8 @@ model Category {
   color       String?  @db.VarChar(20)
   sort_order  Int      @default(0) @db.UnsignedInt
   status      Int      @default(1) @db.UnsignedTinyInt
-  created_by  Int      @default(0) @db.UnsignedInt
-  updated_by  Int      @default(0) @db.UnsignedInt
+  created_by  Int?     @db.UnsignedInt
+  updated_by  Int?     @db.UnsignedInt
   created_at  DateTime? @db.DateTime
   updated_at  DateTime? @db.DateTime
 
@@ -104,8 +104,8 @@ model Facility {
 
   status      Int       @default(1) @db.UnsignedTinyInt
 
-  created_by  Int       @default(0) @db.UnsignedInt
-  updated_by  Int       @default(0) @db.UnsignedInt
+  created_by  Int?      @db.UnsignedInt
+  updated_by  Int?      @db.UnsignedInt
 
   created_at  DateTime? @db.DateTime
   updated_at  DateTime? @db.DateTime
@@ -122,8 +122,8 @@ model State {
 
   status      Int       @default(1) @db.UnsignedTinyInt
 
-  created_by  Int       @default(0) @db.UnsignedInt
-  updated_by  Int       @default(0) @db.UnsignedInt
+  created_by  Int?      @db.UnsignedInt
+  updated_by  Int?      @db.UnsignedInt
 
   created_at  DateTime? @db.DateTime
   updated_at  DateTime? @db.DateTime
@@ -143,8 +143,8 @@ model City {
   is_popular  Int       @default(0) @db.UnsignedTinyInt
   status      Int       @default(1) @db.UnsignedTinyInt
 
-  created_by  Int       @default(0) @db.UnsignedInt
-  updated_by  Int       @default(0) @db.UnsignedInt
+  created_by  Int?      @db.UnsignedInt
+  updated_by  Int?      @db.UnsignedInt
 
   created_at  DateTime? @db.DateTime
   updated_at  DateTime? @db.DateTime
@@ -164,8 +164,8 @@ model Locality {
 
   status      Int       @default(1) @db.UnsignedTinyInt
 
-  created_by  Int       @default(0) @db.UnsignedInt
-  updated_by  Int       @default(0) @db.UnsignedInt
+  created_by  Int?      @db.UnsignedInt
+  updated_by  Int?      @db.UnsignedInt
 
   created_at  DateTime? @db.DateTime
   updated_at  DateTime? @db.DateTime
@@ -185,9 +185,9 @@ model CategoryService {
   id                    Int       @id @default(autoincrement()) @db.UnsignedInt
   user_id               Int       @db.UnsignedInt
   category_id           Int       @db.UnsignedInt
-  state_id              Int       @default(0) @db.UnsignedInt
-  city_id               Int       @default(0) @db.UnsignedInt
-  locality_id           Int       @default(0) @db.UnsignedInt
+  state_id              Int?      @db.UnsignedInt
+  city_id               Int?      @db.UnsignedInt
+  locality_id           Int?      @db.UnsignedInt
 
   service_name          String    @db.VarChar(250)
   service_description   String?   @db.Text
@@ -214,8 +214,8 @@ model CategoryService {
 
   status                Int       @default(0) @db.UnsignedTinyInt
 
-  created_by            Int       @default(0) @db.UnsignedInt
-  updated_by            Int       @default(0) @db.UnsignedInt
+  created_by            Int?      @db.UnsignedInt
+  updated_by            Int?      @db.UnsignedInt
 
   created_at            DateTime? @db.DateTime
   updated_at            DateTime? @db.DateTime
@@ -245,8 +245,8 @@ model Gallery {
   gallery_image       String?  @db.VarChar(250)
   gallery_video       String?  @db.VarChar(250)
   status              Int      @default(0) @db.UnsignedTinyInt
-  created_by          Int      @default(0) @db.UnsignedInt
-  updated_by          Int      @default(0) @db.UnsignedInt
+  created_by          Int?     @db.UnsignedInt
+  updated_by          Int?     @db.UnsignedInt
   created_at          DateTime?
   updated_at          DateTime?
 
@@ -273,8 +273,8 @@ model ServiceReview {
 
   status              Int      @default(0) @db.UnsignedTinyInt
 
-  created_by          Int      @default(0) @db.UnsignedInt
-  updated_by          Int      @default(0) @db.UnsignedInt
+  created_by          Int?     @db.UnsignedInt
+  updated_by          Int?     @db.UnsignedInt
 
   created_at          DateTime? @db.DateTime
   updated_at          DateTime? @db.DateTime
@@ -292,18 +292,18 @@ model ServiceReview {
 model ServiceDate {
   id                    Int           @id @default(autoincrement()) @db.UnsignedInt
   user_id               Int           @db.UnsignedInt
-  category_id           Int           @default(0) @db.UnsignedInt
-  category_service_id   Int           @default(0) @db.UnsignedInt
+  category_id           Int?          @db.UnsignedInt
+  category_service_id   Int?          @db.UnsignedInt
   date_type             String?       @db.VarChar(50)
   service_date          DateTime?     @db.Date
 
   status                Int           @default(0) @db.UnsignedTinyInt
-  created_by            Int           @default(0) @db.UnsignedInt
-  updated_by            Int           @default(0) @db.UnsignedInt
+  created_by            Int?          @db.UnsignedInt
+  updated_by            Int?          @db.UnsignedInt
   created_at            DateTime?     @db.DateTime
   updated_at            DateTime?     @db.DateTime
 
-  category_service    CategoryService  @relation(fields: [category_service_id], references: [id])
+  category_service    CategoryService?  @relation(fields: [category_service_id], references: [id])
 
   @@index([category_id], map: "idx_service_dates_category_id")
   @@index([date_type], map: "idx_service_dates_date_type")

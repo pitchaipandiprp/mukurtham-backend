@@ -13,6 +13,10 @@ const createServiceReview = async (data) => {
         throw new AppError('Please provide a valid category service ID');
     }
 
+    if (!data.rating) {
+        throw new AppError('Please provide a valid rating');
+    }
+
     if (!data.review_description) {
         throw new AppError('Please provide a valid review description');
     }
@@ -35,8 +39,7 @@ const createServiceReview = async (data) => {
     });
 };
 
-const serviceReviewList = async (data) => {
-
+const buildWhere = (data) => {
     const categoryServiceId = Number(data.category_service_id);
 
     if (!categoryServiceId) {
@@ -53,11 +56,10 @@ const serviceReviewList = async (data) => {
         where.rating = Number(data.rating);
     }
 
-    if (data.review_title?.trim()) {
-        where.review_title = {
-            contains: data.review_title.trim(),
-        };
-    }
+    return where;
+};
+
+const serviceReviewList = async (data) => {
 
     const page = Number(data.page || 1);
     const limit = Number(data.limit || 10);
@@ -65,12 +67,12 @@ const serviceReviewList = async (data) => {
 
     //Get total review count
     const total = await prisma.serviceReview.count({
-        where,
+        where: buildWhere(data),
     });
 
     //Get average rating
     const averageResult = await prisma.serviceReview.aggregate({
-        where,
+        where: buildWhere(data),
         _avg: {
             rating: true,
         },
@@ -79,7 +81,7 @@ const serviceReviewList = async (data) => {
     //Get rating counts
     const ratingRecords = await prisma.serviceReview.groupBy({
         by: ["rating"],
-        where,
+        where: buildWhere(data),
         _count: {
             rating: true,
         },
@@ -105,7 +107,7 @@ const serviceReviewList = async (data) => {
 
     //Get reviews
     const reviews = await prisma.serviceReview.findMany({
-        where,
+        where: buildWhere(data),
 
         include: {
             category_service: {
@@ -147,38 +149,14 @@ const serviceReviewList = async (data) => {
 
 const serviceReviewRecords = async (data) => {
 
-    const categoryServiceId = Number(data.category_service_id);
-
-    if (!categoryServiceId) {
-        throw new AppError('Please provide a valid category service ID');
-    }
-
-    const where = { status: 1 };
-
-    if (categoryServiceId) {
-        where.category_service_id = categoryServiceId;
-    }
-
-    if (data.rating) {
-        where.rating = Number(data.rating);
-    }
-
-    if (data.review_title?.trim()) {
-        where.review_title = {
-            contains: data.review_title.trim(),
-        };
-    }
-
-    const limit = Number(data.limit || 10);
-
     //Get total review count
     const total = await prisma.serviceReview.count({
-        where,
+        where: buildWhere(data),
     });
 
     //Get average rating
     const averageResult = await prisma.serviceReview.aggregate({
-        where,
+        where: buildWhere(data),
         _avg: {
             rating: true,
         },
@@ -187,7 +165,7 @@ const serviceReviewRecords = async (data) => {
     //Get rating counts
     const ratingRecords = await prisma.serviceReview.groupBy({
         by: ["rating"],
-        where,
+        where: buildWhere(data),
         _count: {
             rating: true,
         },
@@ -213,7 +191,7 @@ const serviceReviewRecords = async (data) => {
 
     //Get reviews
     const reviews = await prisma.serviceReview.findMany({
-        where,
+        where: buildWhere(data),
 
         include: {
             category_service: {
@@ -233,8 +211,6 @@ const serviceReviewRecords = async (data) => {
         orderBy: data.orderBy || {
             id: "desc",
         },
-
-        take: limit,
     });
 
     return {

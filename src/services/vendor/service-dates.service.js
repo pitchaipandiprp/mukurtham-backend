@@ -1,17 +1,18 @@
 import prisma from '../../config/prisma.js';
 import AppError from '../../utils/app-error.js';
-import { statusMap } from '../../config/common.js';
+import { statusMap, parseDate } from '../../config/common.js';
 
 
 const createServiceDate = async (data) => {
     const userId = Number(data.user_id);
     const serviceDateId = data.id ? Number(data.id) : null;
+    const dataType = data.date_type?.trim() || null;
 
     const insertData = {
         user_id: Number(data.user_id),
-        category_service_id: Number(data.category_service_id) || 0,
-        date_type: data.date_type || null,
-        service_date: data.service_date || null,
+        category_service_id: Number(data.category_service_id) || null,
+        date_type: dataType,
+        service_date: parseDate(data.service_date) || null,
         status: Number(data.status ?? 0),
     };
 
@@ -22,6 +23,14 @@ const createServiceDate = async (data) => {
             throw new AppError('Service date not found');
         }
 
+        if (dataType.toLowerCase() == 'available') {
+            return await prisma.serviceDate.delete({
+                where: {
+                    id: serviceDateId,
+                },
+            });
+        }
+
         return prisma.serviceDate.update({
             where: { id: serviceDateId },
             data: {
@@ -30,6 +39,10 @@ const createServiceDate = async (data) => {
                 updated_at: new Date(),
             },
         });
+    }
+
+    if (dataType.toLowerCase() == 'available') {
+        throw new AppError('Please provide a valid data type');
     }
 
     return prisma.serviceDate.create({
@@ -74,7 +87,7 @@ const buildWhere = (data) => {
     }
 
     if (data.service_date) {
-        where.service_date = data.service_date;
+        where.service_date = parseDate(data.service_date);
     }
 
     if (data.status !== undefined && data.status !== '') {
@@ -155,6 +168,14 @@ const updateServiceDateStatus = async (data) => {
 
     if (!Object.hasOwn(statusMap, data.status)) {
         throw new AppError('Please provide a valid status');
+    }
+
+    if (data.status == 'delete') {
+        return await prisma.serviceDate.delete({
+            where: {
+                id,
+            },
+        });
     }
 
     return prisma.serviceDate.update({

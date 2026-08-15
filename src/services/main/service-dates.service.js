@@ -4,10 +4,26 @@ import { statusMap } from '../../config/common.js';
 
 
 const buildWhere = (data) => {
+    const categoryServiceId = Number(data?.category_service_id);
+
+    if (!categoryServiceId) {
+        throw new AppError('Please provide a valid service ID');
+    }
+
     const where = { status: 1 };
 
-    if (data.category_service_id !== undefined && data.category_service_id !== '') {
-        where.category_service_id = Number(data.category_service_id);
+    if (categoryServiceId !== undefined && categoryServiceId !== '') {
+        where.OR = [
+            {
+                category_service_id: categoryServiceId,
+            },
+            {
+                category_service_id: null,
+            },
+            {
+                category_service_id: 0,
+            },
+        ];
     }
 
     if (data.date_type?.trim()) {
@@ -16,28 +32,6 @@ const buildWhere = (data) => {
 
     if (data.service_date) {
         where.service_date = data.service_date;
-    }
-
-    if (data.status !== undefined && data.status !== '') {
-        where.status = Number(data.status);
-    }
-
-    if (data.search?.trim()) {
-        const search = data.search.trim();
-        where.OR = [
-            {
-                category_service: {
-                    service_name: {
-                        contains: search,
-                    },
-                },
-            },
-            {
-                date_type: {
-                    contains: search,
-                },
-            },
-        ];
     }
 
     return where;
