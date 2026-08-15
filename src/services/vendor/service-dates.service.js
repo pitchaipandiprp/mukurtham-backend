@@ -5,6 +5,10 @@ import { statusMap, parseDate } from '../../config/common.js';
 
 const createServiceDate = async (data) => {
     const userId = Number(data.user_id);
+    if (!userId) {
+        throw new AppError('Please provide a valid user ID');
+    }
+
     const serviceDateId = data.id ? Number(data.id) : null;
     const dataType = data.date_type?.trim() || null;
 
@@ -32,7 +36,7 @@ const createServiceDate = async (data) => {
         }
 
         return prisma.serviceDate.update({
-            where: { id: serviceDateId },
+            where: { id: serviceDateId, user_id: userId, },
             data: {
                 ...insertData,
                 updated_by: userId,
@@ -145,6 +149,35 @@ const serviceDateList = async (data) => {
 };
 
 const serviceDateRecords = async (data) => {
+    const userId = Number(data.user_id);
+    if (!userId) {
+        throw new AppError('Please provide a valid user ID');
+    }
+
+    const categoryServiceId = Number(data?.category_service_id);
+
+    const userWhere = {
+        user_id: userId,
+    };
+
+    if (categoryServiceId > 0) {
+        userWhere.category_service_id = categoryServiceId;
+    }
+
+    const where = {
+        status: {
+            not: 2,
+        },
+        OR: [
+            {
+                date_type: {
+                    in: ["Waxing", "Waning"],
+                },
+            },
+            userWhere,
+        ],
+    };
+
     const include = {
         category_service: {
             select: {
@@ -152,14 +185,20 @@ const serviceDateRecords = async (data) => {
             },
         },
     };
+
     return await prisma.serviceDate.findMany({
-        where: buildWhere(data),
+        where,
         include,
         orderBy: data.orderBy || { id: 'desc' },
     });
 };
 
 const updateServiceDateStatus = async (data) => {
+    const userId = Number(data.user_id);
+    if (!userId) {
+        throw new AppError('Please provide a valid user ID');
+    }
+
     const id = Number(data?.id);
 
     if (!id) {
@@ -174,12 +213,13 @@ const updateServiceDateStatus = async (data) => {
         return await prisma.serviceDate.delete({
             where: {
                 id,
+                user_id: userId,
             },
         });
     }
 
     return prisma.serviceDate.update({
-        where: { id },
+        where: { id, user_id: userId, },
         data: {
             status: statusMap[data.status],
             updated_by: Number(data.user_id),
