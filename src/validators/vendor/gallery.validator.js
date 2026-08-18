@@ -19,10 +19,6 @@ const createGallery = [
         .isString()
         .withMessage('gallery_type must be a string'),
 
-    body('occasion_type')
-        .optional({ values: 'falsy' })
-        .isString()
-        .withMessage('occasion_type must be a string'),
 
     (req, res, next) => {
         const errors = validationResult(req);

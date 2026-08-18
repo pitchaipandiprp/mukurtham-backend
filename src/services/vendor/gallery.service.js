@@ -23,7 +23,6 @@ const createGallery = async (data) => {
         user_id: userId,
         category_service_id: categoryServiceId,
         gallery_type: data.gallery_type || 'image',
-        occasion_type: data.occasion_type || null,
         gallery_image: data.gallery_image || null,
         gallery_video: data.gallery_video || null,
         status: Number(data.status ?? 1),
@@ -86,9 +85,6 @@ const galleryList = async (data) => {
         where.gallery_type = data.gallery_type;
     }
 
-    if (data.occasion_type !== undefined && data.occasion_type !== '') {
-        where.occasion_type = Number(data.occasion_type);
-    }
 
     if (data.status !== undefined && data.status !== '') {
         where.status = Number(data.status);
@@ -102,11 +98,6 @@ const galleryList = async (data) => {
                     service_name: {
                         contains: search,
                     },
-                },
-            },
-            {
-                occasion_type: {
-                    contains: search,
                 },
             },
         ];
@@ -168,9 +159,6 @@ const galleryRecords = async (data) => {
         where.gallery_type = data.gallery_type;
     }
 
-    if (data.occasion_type !== undefined && data.occasion_type !== '') {
-        where.occasion_type = Number(data.occasion_type);
-    }
 
     if (data.status !== undefined && data.status !== '') {
         where.status = Number(data.status);
@@ -184,11 +172,6 @@ const galleryRecords = async (data) => {
                     service_name: {
                         contains: search,
                     },
-                },
-            },
-            {
-                occasion_type: {
-                    contains: search,
                 },
             },
         ];

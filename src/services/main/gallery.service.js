@@ -19,9 +19,6 @@ const galleryRecords = async (data) => {
         where.gallery_type = data.gallery_type;
     }
 
-    if (data.occasion_type !== undefined && data.occasion_type !== '') {
-        where.occasion_type = Number(data.occasion_type);
-    }
 
     const gallery = await prisma.gallery.findMany({
         where,
