@@ -16,7 +16,8 @@ const createServiceDate = async (data) => {
         user_id: Number(data.user_id),
         category_service_id: Number(data.category_service_id) || null,
         date_type: dataType,
-        service_date: parseDate(data.service_date) || null,
+        from_date: parseDate(data.from_date) || null,
+        to_date: parseDate(data.to_date) || null,
         status: Number(data.status ?? 0),
     };
 
@@ -82,38 +83,19 @@ const buildWhere = (data) => {
         where.user_id = Number(data.user_id);
     }
 
-    if (data.category_service_id !== undefined && data.category_service_id !== '') {
+    if (data.category_service_id) {
         where.category_service_id = Number(data.category_service_id);
     }
 
-    if (data.date_type?.trim()) {
-        where.date_type = data.date_type.trim();
+    if (data.from_date) {
+        where.from_date = parseDate(data.from_date);
     }
-
-    if (data.service_date) {
-        where.service_date = parseDate(data.service_date);
+    if (data.to_date) {
+        where.to_date = parseDate(data.to_date);
     }
 
     if (data.status !== undefined && data.status !== '') {
         where.status = Number(data.status);
-    }
-
-    if (data.search?.trim()) {
-        const search = data.search.trim();
-        where.OR = [
-            {
-                category_service: {
-                    service_name: {
-                        contains: search,
-                    },
-                },
-            },
-            {
-                date_type: {
-                    contains: search,
-                },
-            },
-        ];
     }
 
     return where;
@@ -126,16 +108,8 @@ const serviceDateList = async (data) => {
     const skip = (page - 1) * limit;
     const orderBy = data.orderBy || { id: 'desc' };
 
-    const include = {
-        category_service: {
-            select: {
-                service_name: true,
-            },
-        },
-    };
-
     const [rows, total] = await Promise.all([
-        prisma.serviceDate.findMany({ where, include, skip, take: limit, orderBy }),
+        prisma.serviceDate.findMany({ where, skip, take: limit, orderBy }),
         prisma.serviceDate.count({ where }),
     ]);
 
@@ -148,6 +122,7 @@ const serviceDateList = async (data) => {
     };
 };
 
+//Used for Available Calendar
 const serviceDateRecords = async (data) => {
     const userId = Number(data.user_id);
 

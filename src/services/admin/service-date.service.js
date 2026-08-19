@@ -58,11 +58,7 @@ const getServiceDate = async (data) => {
 const buildWhere = (data) => {
     const where = { status: { not: 2 } };
 
-    if (data.category_id !== undefined && data.category_id !== '') {
-        where.category_id = Number(data.category_id);
-    }
-
-    if (data.category_service_id !== undefined && data.category_service_id !== '') {
+    if (data.category_service_id) {
         where.category_service_id = Number(data.category_service_id);
     }
 

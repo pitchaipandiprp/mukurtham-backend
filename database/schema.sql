@@ -263,10 +263,10 @@ CREATE TABLE IF NOT EXISTS `service_reviews` (
 CREATE TABLE IF NOT EXISTS `service_dates` (
     `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
     `user_id` INT UNSIGNED NOT NULL,
-    `category_id` INT UNSIGNED DEFAULT NULL,
     `category_service_id` INT UNSIGNED DEFAULT NULL,
     `date_type` VARCHAR(50) DEFAULT NULL,
-    `service_date` DATE DEFAULT NULL,
+    `from_date` DATE DEFAULT NULL,
+    `to_date` DATE DEFAULT NULL,
 
     `status` TINYINT UNSIGNED NOT NULL DEFAULT 0,
     `created_by` INT UNSIGNED DEFAULT NULL,
@@ -275,7 +275,7 @@ CREATE TABLE IF NOT EXISTS `service_dates` (
     `updated_at` DATETIME DEFAULT NULL,
 
     PRIMARY KEY (`id`),
-    KEY `idx_service_dates_category_id` (`category_id`),
+    KEY `idx_service_dates_category_service_id` (`category_service_id`),
     KEY `idx_service_dates_type` (`date_type`)
 );
 

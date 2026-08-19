@@ -23,7 +23,11 @@ const getServiceDate = async (req, res) => {
 const updateServiceDateStatus = async (req, res) => {
     try {
         const result = await serviceDatesService.updateServiceDateStatus(req.body);
-        return Response.success(res, 'Status updated successfully', result);
+        let msg = 'Status updated successfully';
+        if (req.body.status == 'delete') {
+            msg = 'Deleted successfully';
+        }
+        return Response.success(res, msg, result);
     } catch (error) {
         return Response.error(res, error.message, error.statusCode);
     }
