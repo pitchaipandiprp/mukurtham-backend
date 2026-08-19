@@ -7,13 +7,15 @@ const parseDate = (value) => value ? new Date(`${value}T00:00:00.000Z`) : null;
 const createServiceDate = async (data) => {
     const userId = Number(data.user_id);
     const serviceDateId = data.id ? Number(data.id) : null;
+    const fromDate = parseDate(data.from_date);
+    const toDate = fromDate;
 
     const insertData = {
         user_id: Number(data.user_id),
-        category_id: Number(data.category_id) || null,
-        category_service_id: Number(data.category_service_id) || null,
+        category_service_id: null,
         date_type: data.date_type || null,
-        service_date: parseDate(data.service_date),
+        from_date: fromDate,
+        to_date: toDate,
         status: Number(data.status ?? 0),
     };
 
@@ -58,24 +60,16 @@ const getServiceDate = async (data) => {
 const buildWhere = (data) => {
     const where = { status: { not: 2 } };
 
-    if (data.category_service_id) {
-        where.category_service_id = Number(data.category_service_id);
-    }
+    where.date_type = {
+        in: ['Waxing', 'Waning'],
+    };
 
-    if (data.date_type?.trim()) {
-        where.date_type = data.date_type.trim();
-    }
-
-    if (data.service_date) {
-        where.service_date = parseDate(data.service_date);
+    if (data.from_date) {
+        where.from_date = parseDate(data.from_date);
     }
 
     if (data.status !== undefined && data.status !== '') {
         where.status = Number(data.status);
-    }
-
-    if (data.search?.trim()) {
-        where.date_type = { contains: data.search.trim() };
     }
 
     return where;
