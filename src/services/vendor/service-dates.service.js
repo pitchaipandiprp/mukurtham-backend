@@ -123,8 +123,8 @@ const serviceDateList = async (data) => {
     };
 };
 
-//Used for Available Calendar
-const serviceDateRecords = async (data) => {
+//Used for Available Calendar in Vendor Dashboard
+const serviceDateForcalendar = async (data) => {
     const userId = Number(data.user_id);
 
     if (!userId) {
@@ -201,5 +201,5 @@ export default {
     getServiceDate,
     updateServiceDateStatus,
     serviceDateList,
-    serviceDateRecords,
+    serviceDateForcalendar,
 };

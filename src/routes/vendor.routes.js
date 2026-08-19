@@ -53,7 +53,7 @@ router.post('/create-service-date', serviceDatesValidator.createServiceDate, ser
 router.post('/get-service-date', serviceDatesController.getServiceDate);
 router.post('/update-service-date-status', serviceDatesController.updateServiceDateStatus);
 router.post('/service-date-list', serviceDatesController.serviceDateList);
-router.post('/service-date-records', serviceDatesController.serviceDateRecords);
+router.post('/service-date-for-calendar', serviceDatesController.serviceDateForcalendar);
 
 
 export default router;

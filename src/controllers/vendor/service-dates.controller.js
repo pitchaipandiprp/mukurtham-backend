@@ -42,9 +42,9 @@ const serviceDateList = async (req, res) => {
     }
 };
 
-const serviceDateRecords = async (req, res) => {
+const serviceDateForcalendar = async (req, res) => {
     try {
-        const result = await serviceDatesService.serviceDateRecords(req.body);
+        const result = await serviceDatesService.serviceDateForcalendar(req.body);
         return Response.success(res, 'Service dates fetched successfully', result);
     } catch (error) {
         return Response.error(res, error.message, error.statusCode);
@@ -56,5 +56,5 @@ export default {
     getServiceDate,
     updateServiceDateStatus,
     serviceDateList,
-    serviceDateRecords,
+    serviceDateForcalendar,
 };
