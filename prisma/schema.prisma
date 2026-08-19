@@ -294,6 +294,7 @@ model ServiceDate {
   user_id               Int           @db.UnsignedInt
   category_service_id   Int?          @db.UnsignedInt
   date_type             String?       @db.VarChar(50)
+  event_name            String?       @db.VarChar(100)
   from_date             DateTime?     @db.Date
   to_date               DateTime?     @db.Date
 
@@ -305,6 +306,7 @@ model ServiceDate {
 
   category_service    CategoryService?  @relation(fields: [category_service_id], references: [id])
 
+  @@index([user_id], map: "idx_service_dates_user_id")
   @@index([category_service_id], map: "idx_service_dates_category_service_id")
   @@index([date_type], map: "idx_service_dates_date_type")
 

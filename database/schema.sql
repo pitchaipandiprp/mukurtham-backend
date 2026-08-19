@@ -265,6 +265,7 @@ CREATE TABLE IF NOT EXISTS `service_dates` (
     `user_id` INT UNSIGNED NOT NULL,
     `category_service_id` INT UNSIGNED DEFAULT NULL,
     `date_type` VARCHAR(50) DEFAULT NULL,
+    `event_name` VARCHAR(100) DEFAULT NULL,
     `from_date` DATE DEFAULT NULL,
     `to_date` DATE DEFAULT NULL,
 
@@ -275,6 +276,7 @@ CREATE TABLE IF NOT EXISTS `service_dates` (
     `updated_at` DATETIME DEFAULT NULL,
 
     PRIMARY KEY (`id`),
+    KEY `idx_service_dates_user_id` (`user_id`),
     KEY `idx_service_dates_category_service_id` (`category_service_id`),
     KEY `idx_service_dates_type` (`date_type`)
 );

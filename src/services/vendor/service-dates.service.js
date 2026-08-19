@@ -16,6 +16,7 @@ const createServiceDate = async (data) => {
         user_id: Number(data.user_id),
         category_service_id: Number(data.category_service_id) || null,
         date_type: dataType,
+        event_name: dataType,
         from_date: parseDate(data.from_date) || null,
         to_date: parseDate(data.to_date) || null,
         status: Number(data.status ?? 0),
@@ -144,7 +145,7 @@ const serviceDateRecords = async (data) => {
         OR: [
             {
                 date_type: {
-                    in: ['Waxing', 'Waning'],
+                    in: ['Waxing', 'Waning', 'Holiday'],
                 },
             },
             {

@@ -14,6 +14,7 @@ const createServiceDate = async (data) => {
         user_id: Number(data.user_id),
         category_service_id: null,
         date_type: data.date_type || null,
+        event_name: data.event_name || null,
         from_date: fromDate,
         to_date: toDate,
         status: Number(data.status ?? 0),
@@ -61,8 +62,14 @@ const buildWhere = (data) => {
     const where = { status: { not: 2 } };
 
     where.date_type = {
-        in: ['Waxing', 'Waning'],
+        in: ['Waxing', 'Waning', 'Holiday'],
     };
+
+    if (data.search) {
+        where.event_name = {
+            contains: data.search,
+        };
+    }
 
     if (data.from_date) {
         where.from_date = parseDate(data.from_date);
