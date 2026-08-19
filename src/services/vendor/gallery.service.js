@@ -3,6 +3,15 @@ import AppError from '../../utils/app-error.js';
 
 const createGallery = async (data) => {
     const userId = Number(data.user_id);
+
+    if (!userId) {
+        throw new AppError('Please provide a valid user ID');
+    }
+
+    if (!data.gallery_image) {
+        throw new AppError('Please provide a valid gallery image');
+    }
+
     const categoryServiceId = Number(data.category_service_id);
     const galleryId = data.id ? Number(data.id) : null;
     let existingGallery = null;
