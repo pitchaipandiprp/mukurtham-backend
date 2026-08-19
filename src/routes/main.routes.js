@@ -15,6 +15,6 @@ router.post('/create-service-review', serviceReviewValidator.createServiceReview
 router.post('/service-review-list', serviceReviewController.serviceReviewList);
 router.post('/service-review-records', serviceReviewController.serviceReviewRecords);
 
-router.post('/service-date-records', serviceDatesController.serviceDateRecords);
+router.post('/service-date-for-calendar', serviceDatesController.serviceDateForcalendar);
 
 export default router;
