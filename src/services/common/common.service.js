@@ -67,7 +67,7 @@ const getCities = async (filters = {}) => {
     return result;
 };
 
-const getLocalities = async (filters = {}) => {
+const getLocalities = async (filters) => {
     const status = filters.status ? Number(filters.status) : 1;
     const stateId = filters.state_id ? Number(filters.state_id) : undefined;
     const cityId = filters.city_id ? Number(filters.city_id) : undefined;

@@ -19,11 +19,6 @@ const createServiceReview = [
         .isInt({ min: 1, max: 5 })
         .withMessage('rating must be an integer between 1 and 5'),
 
-    body('review_description')
-        .notEmpty()
-        .withMessage('review_description is required')
-        .isString()
-        .withMessage('review_description must be a string'),
 
     (req, res, next) => {
         const errors = validationResult(req);

@@ -17,12 +17,12 @@ const getFacilities = async (req, res) => {
 };
 
 const getCities = async (req, res) => {
-    const cities = await commonService.getCities(req.query);
+    const cities = await commonService.getCities(req.body);
     Response.success(res, 'Success', cities);
 };
 
 const getLocalities = async (req, res) => {
-    const localities = await commonService.getLocalities(req.query);
+    const localities = await commonService.getLocalities(req.body);
     Response.success(res, 'Success', localities);
 };
 

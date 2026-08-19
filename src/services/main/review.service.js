@@ -17,9 +17,6 @@ const createServiceReview = async (data) => {
         throw new AppError('Please provide a valid rating');
     }
 
-    if (!data.review_description) {
-        throw new AppError('Please provide a valid review description');
-    }
 
     const insertData = {
         user_id: userId,
@@ -27,7 +24,7 @@ const createServiceReview = async (data) => {
         rating: Number(data.rating) || 1,
         review_title: data.review_title || null,
         review_description: data.review_description || null,
-        status: 0,
+        status: Number(data.status) || 0,
         created_by: userId,
         updated_by: userId,
         created_at: new Date(),
