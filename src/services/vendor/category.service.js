@@ -17,6 +17,7 @@ const createCategoryService = async (data) => {
 
     const categoryServiceId = data.id ? Number(data.id) : null;
     let existingService = null;
+    let insertedRecord;
 
     if (categoryServiceId) {
         existingService = await prisma.categoryService.findUnique({
@@ -58,7 +59,7 @@ const createCategoryService = async (data) => {
     if (existingService) {
         insertData.updated_by = userId;
         insertData.updated_at = new Date();
-        return await prisma.categoryService.update({
+        insertedRecord = await prisma.categoryService.update({
             where: {
                 id: categoryServiceId,
             },
@@ -70,11 +71,37 @@ const createCategoryService = async (data) => {
         insertData.updated_by = userId;
         insertData.updated_at = new Date();
 
-        return await prisma.categoryService.create({
+        insertedRecord = await prisma.categoryService.create({
             data: insertData,
+        });
+
+        categoryServiceId = insertedRecord.id;
+    }
+
+    const highlightsArr = Array.isArray(data.highlights) ? data.highlights : [];
+
+    if (highlightsArr.length > 0) {
+        await prisma.serviceHighlight.deleteMany({
+            where: {
+                category_service_id: categoryServiceId,
+            },
+        });
+
+        await prisma.serviceHighlight.createMany({
+            data: highlightsArr.map((highlight) => ({
+                user_id: userId,
+                category_service_id: categoryServiceId,
+                highlight: highlight.trim(),
+                status: 1,
+                created_by: userId,
+                updated_by: userId,
+                created_at: new Date(),
+                updated_at: new Date(),
+            })),
         });
     }
 
+    return insertedRecord;
 };
 
 const getCategoryService = async (data) => {
@@ -105,6 +132,12 @@ const getCategoryService = async (data) => {
                 select: {
                     id: true,
                     name: true,
+                },
+            },
+            service_highlights: {
+                select: {
+                    id: true,
+                    highlight: true,
                 },
             },
         },

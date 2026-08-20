@@ -281,3 +281,23 @@ CREATE TABLE IF NOT EXISTS `service_dates` (
     KEY `idx_service_dates_type` (`date_type`)
 );
 
+CREATE TABLE IF NOT EXISTS `service_highlights` (
+    `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+
+    `user_id` INT UNSIGNED NOT NULL,
+    `category_service_id` INT UNSIGNED NOT NULL,
+
+    `highlight` VARCHAR(250) NOT NULL,
+
+    `status` TINYINT UNSIGNED NOT NULL DEFAULT 0,
+
+    `created_by` INT UNSIGNED DEFAULT NULL,
+    `updated_by` INT UNSIGNED DEFAULT NULL,
+
+    `created_at` DATETIME DEFAULT NULL,
+    `updated_at` DATETIME DEFAULT NULL,
+
+    PRIMARY KEY (`id`),
+    KEY `idx_service_highlights_user_id` (`user_id`),
+    KEY `idx_service_highlights_category_service_id` (`category_service_id`)
+);
