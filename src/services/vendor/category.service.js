@@ -37,14 +37,14 @@ const createCategoryService = async (data) => {
         city_id: cityId,
         locality_id: localityId,
         service_name: data.service_name,
+        service_email: data.service_email || null,
+        service_mobile: data.service_mobile || null,
         service_description: data.service_description || null,
         service_address: data.service_address || null,
         service_banner_image: data.service_banner_image || existingService?.service_banner_image || null,
         capacity: Number(data.capacity || 0),
         number_of_rooms: Number(data.number_of_rooms || 0),
         facility_ids: data.facility_ids || null,
-        car_parking: data.car_parking || null,
-        ac_available: data.ac_available || null,
         latitude: String(data.latitude),
         longitude: String(data.longitude),
         pricing_type: data.pricing_type || null,
@@ -128,9 +128,11 @@ const categoryServiceList = async (data) => {
     }
 
     if (data.search?.trim()) {
-        where.service_name = {
-            contains: data.search.trim(),
-        };
+        where.OR = [
+            { service_name: { contains: data.search.trim() } },
+            { service_email: { contains: data.search.trim() } },
+            { service_mobile: { contains: data.search.trim() } },
+        ];
     }
 
     if (data.status !== undefined && data.status !== "") {
@@ -218,9 +220,11 @@ const categoryServiceRecords = async (data) => {
     }
 
     if (data.search?.trim()) {
-        where.service_name = {
-            contains: data.search.trim(),
-        };
+        where.OR = [
+            { service_name: { contains: data.search.trim() } },
+            { service_email: { contains: data.search.trim() } },
+            { service_mobile: { contains: data.search.trim() } },
+        ];
     }
 
     if (data.status !== undefined && data.status !== "") {

@@ -190,6 +190,8 @@ model CategoryService {
   locality_id           Int?      @db.UnsignedInt
 
   service_name          String    @db.VarChar(250)
+  service_mobile        String?   @db.VarChar(100)
+  service_email         String?   @db.VarChar(100)
   service_description   String?   @db.Text
   service_address       String?   @db.Text
   service_banner_image  String?   @db.VarChar(250)
@@ -198,8 +200,6 @@ model CategoryService {
   number_of_rooms       Int       @default(0) @db.UnsignedInt
 
   facility_ids          String?   @db.VarChar(100)
-  car_parking           String?   @db.VarChar(10)
-  ac_available          String?   @db.VarChar(10)
 
   latitude              String?   @db.VarChar(100)
   longitude             String?   @db.VarChar(100)
