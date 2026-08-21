@@ -304,3 +304,35 @@ CREATE TABLE IF NOT EXISTS `service_highlights` (
     KEY `idx_service_highlights_user_id` (`user_id`),
     KEY `idx_service_highlights_category_service_id` (`category_service_id`)
 );
+
+
+CREATE TABLE IF NOT EXISTS `service_certificates` (
+    `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+
+    `user_id` INT UNSIGNED NOT NULL,
+    `category_service_id` INT UNSIGNED NOT NULL,
+
+    `aadhar_number` VARCHAR(250) DEFAULT NULL,
+    `pan_number` VARCHAR(250) DEFAULT NULL,
+    `gst_number` VARCHAR(250) DEFAULT NULL,
+    `bank_details` VARCHAR(250) DEFAULT NULL,
+
+    `aadhar_doc` VARCHAR(250) DEFAULT NULL,
+    `pan_doc` VARCHAR(250) DEFAULT NULL,
+    `gst_doc` VARCHAR(250) DEFAULT NULL,
+    `bank_doc` VARCHAR(250) DEFAULT NULL,
+
+    `status` TINYINT UNSIGNED NOT NULL DEFAULT 0,
+
+    `created_by` INT UNSIGNED DEFAULT NULL,
+    `updated_by` INT UNSIGNED DEFAULT NULL,
+
+    `created_at` DATETIME DEFAULT NULL,
+    `updated_at` DATETIME DEFAULT NULL,
+
+    PRIMARY KEY (`id`),
+    KEY `idx_service_certificates_user_id` (`user_id`),
+    KEY `idx_service_certificates_category_service_id` (`category_service_id`)
+);
+
+

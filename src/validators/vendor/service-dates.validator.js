@@ -49,4 +49,8 @@ const createServiceDate = [
     },
 ];
 
-export default { createServiceDate };
+const serviceDatesValidator = {
+    createServiceDate,
+};
+
+export default serviceDatesValidator;

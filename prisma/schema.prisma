@@ -228,10 +228,11 @@ model CategoryService {
   city                        City?     @relation(fields: [city_id], references: [id])
   locality                    Locality? @relation(fields: [locality_id], references: [id])
 
-  gallery Gallery[]
-  service_reviews ServiceReview[]
-  service_dates ServiceDate[]
-  service_highlights ServiceHighlight[]
+  gallery                         Gallery[]
+  service_reviews                 ServiceReview[]
+  service_dates                   ServiceDate[]
+  service_highlights              ServiceHighlight[]
+  service_certificates            ServiceCertificate[]
 
   @@index([category_id], map: "idx_category_services_category_id")
   @@index([user_id], map: "idx_category_services_user_id")
@@ -339,4 +340,35 @@ model ServiceHighlight {
   @@index([category_service_id], map: "idx_service_highlights_category_service_id")
 
   @@map("service_highlights")
+}
+
+model ServiceCertificate {
+  id                          Int      @id @default(autoincrement()) @db.UnsignedInt
+
+  user_id                     Int      @db.UnsignedInt
+  category_service_id         Int      @db.UnsignedInt
+
+  aadhar_number               String?  @db.VarChar(250)
+  pan_number                  String?  @db.VarChar(250)
+  gst_number                  String?  @db.VarChar(250)
+  bank_details                String?  @db.VarChar(250)
+  aadhar_doc                  String?  @db.VarChar(250)
+  pan_doc                     String?  @db.VarChar(250)
+  gst_doc                     String?  @db.VarChar(250)
+  bank_doc                    String?  @db.VarChar(250)
+
+  status                      Int      @default(0) @db.UnsignedTinyInt
+
+  created_by                  Int?     @db.UnsignedInt
+  updated_by                  Int?     @db.UnsignedInt
+
+  created_at                  DateTime? @db.DateTime
+  updated_at                  DateTime? @db.DateTime
+
+  category_service            CategoryService?  @relation(fields: [category_service_id], references: [id])
+
+  @@index([user_id], map: "idx_service_certificates_user_id")
+  @@index([category_service_id], map: "idx_service_certificates_category_service_id")
+
+  @@map("service_certificates")
 }

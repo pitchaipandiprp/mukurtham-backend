@@ -7,6 +7,8 @@ import galleryValidator from '../validators/vendor/gallery.validator.js';
 import serviceReviewsController from '../controllers/vendor/service-reviews.controller.js';
 import serviceDatesController from '../controllers/vendor/service-dates.controller.js';
 import serviceDatesValidator from '../validators/vendor/service-dates.validator.js';
+import serviceCertificateValidator from '../validators/vendor/service-certificate.validator.js';
+import serviceCertificateController from '../controllers/vendor/service-certificate.controller.js';
 import { upload } from "../middlewares/upload.middleware.js";
 
 const router = express.Router();
@@ -55,5 +57,22 @@ router.post('/update-service-date-status', serviceDatesController.updateServiceD
 router.post('/service-date-list', serviceDatesController.serviceDateList);
 router.post('/service-date-for-calendar', serviceDatesController.serviceDateForcalendar);
 
+router.post(
+    '/create-service-certificate',
+
+    upload({
+        folder: "service-certificates",
+        type: "image_pdf",
+        maxSize: 1,
+    }).fields([
+        { name: "aadhar_doc", maxCount: 1 },
+        { name: "pan_doc", maxCount: 1 },
+        { name: "gst_doc", maxCount: 1 },
+        { name: "bank_doc", maxCount: 1 },
+    ]),
+    serviceCertificateValidator.createServiceCertificate,
+    serviceCertificateController.createServiceCertificate
+);
+router.post('/get-service-certificate', serviceCertificateController.getServiceCertificate);
 
 export default router;

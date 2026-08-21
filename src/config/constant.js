@@ -6,3 +6,6 @@ export const UPLOAD_URL_SERVICE = "/storage/uploads/services";
 
 export const UPLOAD_DIR_GALLERY = "storage/uploads/gallery";
 export const UPLOAD_URL_GALLERY = "/storage/uploads/gallery";
+
+export const UPLOAD_DIR_SERVICE_CERTIFICATE = "storage/uploads/service-certificates";
+export const UPLOAD_URL_SERVICE_CERTIFICATE = "/storage/uploads/service-certificates";
