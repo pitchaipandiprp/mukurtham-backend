@@ -183,6 +183,12 @@ const getCategoryService = async (data) => {
                     name: true,
                 },
             },
+            service_highlights: {
+                select: {
+                    id: true,
+                    highlight: true,
+                },
+            },
         },
     });
 
