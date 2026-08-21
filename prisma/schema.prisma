@@ -192,12 +192,14 @@ model CategoryService {
   service_name          String    @db.VarChar(250)
   service_mobile        String?   @db.VarChar(100)
   service_email         String?   @db.VarChar(100)
+  service_experience    String?   @db.VarChar(100)
   service_description   String?   @db.Text
   service_address       String?   @db.Text
   service_banner_image  String?   @db.VarChar(250)
 
   capacity              Int       @default(0) @db.UnsignedInt
   number_of_rooms       Int       @default(0) @db.UnsignedInt
+  completed_events      String?   @db.VarChar(100)
 
   facility_ids          String?   @db.VarChar(100)
 
@@ -212,6 +214,7 @@ model CategoryService {
   tax_amount            Decimal   @default(0.00) @db.Decimal(10, 2)
   final_amount          Decimal   @default(0.00) @db.Decimal(10, 2)
 
+  verification_status   Json?
   status                Int       @default(0) @db.UnsignedTinyInt
 
   created_by            Int?      @db.UnsignedInt

@@ -75,6 +75,8 @@ Choose our Mahal as the destination for your next celebration and create beautif
             service_name: `${serviceType} ${i}`,
             service_mobile: `+91-90000000${i}`,
             service_email: `service${i}@example.com`,
+            service_experience: `8 Years Experience`,
+            completed_events: `500+`,
 
             service_description: serviceDescriptions,
 
