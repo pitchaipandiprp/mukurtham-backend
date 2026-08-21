@@ -4,19 +4,14 @@ import AppError from '../../utils/app-error.js';
 const createServiceCertificate = async (data) => {
     const userId = Number(data.user_id);
     const categoryServiceId = Number(data.category_service_id);
-    const serviceCertificateId = data.id ? Number(data.id) : null;
     let existing = null;
 
-    if (serviceCertificateId) {
-        existing = await prisma.serviceCertificate.findUnique({
+    if (categoryServiceId) {
+        existing = await prisma.serviceCertificate.findFirst({
             where: {
-                id: serviceCertificateId,
+                category_service_id: categoryServiceId,
             },
         });
-
-        if (!existing) {
-            throw new AppError('Record not found');
-        }
     }
 
     const insertData = {
@@ -34,38 +29,43 @@ const createServiceCertificate = async (data) => {
     };
 
     if (existing) {
-        insertData.updated_by = userId;
-        insertData.updated_at = new Date();
-
         return await prisma.serviceCertificate.update({
             where: {
-                id: serviceCertificateId,
+                id: existing.id,
             },
-            data: insertData,
+            data: {
+                ...insertData,
+                updated_by: userId,
+                updated_at: new Date(),
+            },
         });
     }
 
-    insertData.created_by = userId;
-    insertData.created_at = new Date();
-    insertData.updated_by = userId;
-    insertData.updated_at = new Date();
-
     return await prisma.serviceCertificate.create({
-        data: insertData,
+        data: {
+            ...insertData,
+            created_by: userId,
+            created_at: new Date(),
+            updated_by: userId,
+            updated_at: new Date(),
+        },
     });
 };
 
 const getServiceCertificate = async (data) => {
-    const id = Number(data?.id);
+    const categoryServiceId = Number(data?.category_service_id);
 
-    if (!id) {
-        throw new AppError('Please provide a valid service certificate ID');
+    if (!categoryServiceId) {
+        throw new AppError('Please provide a valid category service ID');
+    }
+    const where = { status: { not: 2 } };
+
+    if (categoryServiceId) {
+        where.category_service_id = categoryServiceId;
     }
 
-    return await prisma.serviceCertificate.findUnique({
-        where: {
-            id,
-        },
+    return await prisma.serviceCertificate.findFirst({
+        where,
     });
 };
 
